@@ -9,7 +9,7 @@
 #pragma comment(lib, "bthprops.lib")
 #pragma comment(lib, "Ws2_32.lib")
 
-//Gathers all devices and 
+//Gathers all devices and finds your desired device and sets up a socket connection to said device. 
 
 typedef ULONGLONG bt_addr, * pbt_addr, BT_ADDR, * PBT_ADDR;
 
@@ -198,9 +198,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		 
 		// see if we find our device (case sensitive)
 		if (ws.find(L"DEVICE NAME HERE") != std::string::npos)
-    {
+    		{
 			foundDev = pdIndex;
-    }
+    		}
 	}
 
 	// pick our ismp device
