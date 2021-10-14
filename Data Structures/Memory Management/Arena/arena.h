@@ -5,6 +5,8 @@ class Arena
 {
 private:
 	static constexpr size_t alignment = alignof(std::max_align_t);
+	alignas(alignment) std::byte buffer_[N];
+	std::byte* ptr_;
 
 	static size_t align_up(size_t n) noexcept
 	{
@@ -13,12 +15,9 @@ private:
 
 	bool pointer_in_buffer(const std::byte* p) const noexcept
 	{
-		return std::uintptr_t(p) >= std::uintptr_t(buffer_) &
+		return std::uintptr_t(p) >= std::uintptr_t(buffer_) &&
 			std::uintptr_t(p) < std::uintptr_t(buffer_) + N;
 	}
-
-	alignas(alignment) std::byte buffer_[N];
-	std::byte* ptr_;
 
 public:
 	Arena() noexcept
