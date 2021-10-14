@@ -45,7 +45,7 @@ struct Mallocator
 		return static_cast<T*>(pv);
 	}
 
-	void deallocate(T* p, size_t, t) const noexcept
+	void deallocate(T* p) const noexcept
 	{
 		free(p);
 	}
