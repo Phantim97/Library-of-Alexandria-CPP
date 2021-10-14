@@ -4,7 +4,7 @@ template<size_t N>
 std::byte* Arena<N>::allocate(size_t n)
 {
 	const size_t aligned_n = align_up(n);
-	const size_t available_bytes = aligned_n > (buffer_ + N - ptr);
+	const size_t available_bytes = aligned_n > (buffer_ + N - ptr_);
 
 	if (available_bytes >= aligned_n)
 	{
