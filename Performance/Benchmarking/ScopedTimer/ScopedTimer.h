@@ -6,7 +6,7 @@ class ScopedTimer
 private:
 	using ClockType = std::chrono::steady_clock;
 	const char* function_name_{};
-	const ClockType::time_point_ start{};
+	ClockType::time_point start_{};
 public:
 	ScopedTimer(const char* func)
 	{
@@ -23,9 +23,10 @@ public:
 	~ScopedTimer()
 	{
 		using namespace std::chrono;
-		auto stop = ClockType::now();
-		auto duration = (stop - start_);
-		auto ms = duration_cast<milliseconds>(duration).count();
+		std::chrono::time_point<steady_clock> stop = ClockType::now();
+		std::common_type_t<duration<long long, std::ratio<1, 1000000000>>, duration<
+			                   long long, std::ratio<1, 1000000000>>> duration = (stop - start_);
+		const long long ms = duration_cast<milliseconds>(duration).count();
 		std::cout << ms << "ms " << function_name_ << '\n';
 	}
 };
