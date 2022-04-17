@@ -3,9 +3,10 @@
 #include <cmath>
 #include <vector>
 #include <complex>
+#include <omp.h>
 
-//Real/Imaginary mix
-std::vector<std::complex<double>> computeDFT(const std::vector<std::complex<double>>& input)
+//Real/Imaginary mix (angle calc approach)
+std::vector<std::complex<double>> dft(const std::vector<std::complex<double>>& input)
 {
 	std::vector<std::complex<double>> output;
 	
@@ -13,6 +14,7 @@ std::vector<std::complex<double>> computeDFT(const std::vector<std::complex<doub
 	{
 		std::complex<double> sum(0.0, 0.0);
 		
+		#pragma omp parallel for shared(input) reduction(+ : sum)
 		for (int t = 0; t < input.size(); t++) //for each input element
 		{
 			double angle = 2 * M_PI * t * k / input.size();
@@ -32,6 +34,8 @@ void computeDFT_realonly(const std::vector<double>& inreal, const std::vector<do
 	{
 		double sumreal = 0;
 		double sumimag = 0;
+		
+		#pragma omp parallel for shared(inreal, inimag) reduction(+ : sumreal, sumimag)
 		for (size_t t = 0; t < inreal.size(); t++)
 		{
 			double angle = 2 * M_PI * t * k / inreal.size();
@@ -41,4 +45,35 @@ void computeDFT_realonly(const std::vector<double>& inreal, const std::vector<do
 		outreal[k] = sumreal;
 		outimag[k] = sumimag;
 	}
+}
+
+//Another variation
+std::vector<std::complex<double>> dft_calc(const std::vector<std::complex<double>& x)
+{
+	constexpr double two_pi = 2 * M_PI;
+	int N = x.size();
+	int K = N;
+	
+	std::complex<double> int_sum;
+	
+	std::vector<std::complex<double>> X; //output
+	X.reserve(K);
+	
+	for (int k = 0; k < K; k++)
+	{
+		int_sum = std::complex<double>(0,0);
+		
+		#pragma omp parallel for shared(x) reduction(+ : int_sum)
+		for (int n = 0; n < N; n++)
+		{
+			double real_part = std::cos((two_pi / N) * k * n);
+			double imag_part = std::sin((two_pi / N) * k * n);
+			std::complex<double> val(real_part, -imag_part);
+			int_sum += x[n] * val;
+		}
+		
+		X.push_back(int_sum);
+	}
+	
+	return X;
 }
