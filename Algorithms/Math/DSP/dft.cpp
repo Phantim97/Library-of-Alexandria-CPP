@@ -48,7 +48,7 @@ void computeDFT_realonly(const std::vector<double>& inreal, const std::vector<do
 }
 
 //Another variation
-std::vector<std::complex<double>> dft_calc(const std::vector<std::complex<double>& x)
+std::vector<std::complex<double>> dft_calc(const std::vector<std::complex<double>>& x)
 {
 	constexpr double two_pi = 2 * M_PI;
 	int N = x.size();
