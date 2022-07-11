@@ -51,29 +51,27 @@ void computeDFT_realonly(const std::vector<double>& inreal, const std::vector<do
 std::vector<std::complex<double>> dft_calc(const std::vector<std::complex<double>>& x)
 {
 	constexpr double two_pi = 2 * M_PI;
-	int N = x.size();
-	int K = N;
-	
-	std::complex<double> int_sum;
-	
+	const int N = x.size();
+	const int K = N;
+
 	std::vector<std::complex<double>> X; //output
 	X.reserve(K);
-	
+
 	for (int k = 0; k < K; k++)
 	{
-		int_sum = std::complex<double>(0,0);
-		
+		std::complex<double> int_sum = std::complex<double>(0, 0);
+
 		#pragma omp parallel for shared(x) reduction(+ : int_sum)
 		for (int n = 0; n < N; n++)
 		{
-			double real_part = std::cos((two_pi / N) * k * n);
-			double imag_part = std::sin((two_pi / N) * k * n);
-			std::complex<double> val(real_part, -imag_part);
+			const double real_part = std::cos((two_pi / N) * k * n);
+			const double imag_part = std::sin((two_pi / N) * k * n);
+			const std::complex<double> val(real_part, -imag_part);
 			int_sum += x[n] * val;
 		}
-		
+
 		X.push_back(int_sum);
 	}
-	
+
 	return X;
 }
