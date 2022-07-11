@@ -5,6 +5,8 @@
 #include <complex>
 #include <omp.h>
 
+//Note for the result the DFT is from range N/2 relative to the input otherwise the resulting sinusoid is the same as the first half reflected
+
 //Real/Imaginary mix (angle calc approach)
 std::vector<std::complex<double>> dft(const std::vector<std::complex<double>>& input)
 {
@@ -74,4 +76,18 @@ std::vector<std::complex<double>> dft_calc(const std::vector<std::complex<double
 	}
 
 	return X;
+}
+
+//C-Style Implementation of DFT
+//res array for both real and imag should be sig_len/2
+void c_style_dft(const double* sig_src, double* sig_res_real, double* sig_res_im, const int sig_len)
+{
+	for (int k = 0; k < sig_len / 2; k++)
+	{
+		for (int i = 0; i < sig_len; i++)
+		{
+			sig_res_real[k] += sig_src[i] * cos(2 * M_PI * k * i/ sig_len);
+			sig_res_im[k] -= sig_src[i] * sin(2 * M_PI * k * i / sig_len);
+		}
+	}
 }
