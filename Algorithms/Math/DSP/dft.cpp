@@ -91,3 +91,53 @@ void c_style_dft(const double* sig_src, double* sig_res_real, double* sig_res_im
 		}
 	}
 }
+
+//Inverse DFT (note needs full length N lengths of both th
+void calc_sig_idft(double* sig_re, double* sig_im, double* res, const int idft_len)
+{
+	for (int k = 0; k < idft_len / 2; k++)
+	{
+		sig_re[k] /= (idft_len / 2);
+		sig_im[k] /= -(idft_len / 2);
+	}
+
+	sig_re[0] /= 2;
+	sig_im[0] /= -2;
+
+	for (int k = 0; k < idft_len / 2; k++)
+	{
+		for (int i = 0; i < idft_len; i++)
+		{
+			res[i] += sig_re[k] * cos(2 * M_PI * k * i / idft_len);
+			res[i] += sig_im[k] * sin(2 * M_PI * k * i / idft_len);
+		}
+	}
+}
+
+std::vector<double> idft_calc(std::vector<std::complex<double>>& in)
+{
+	std::vector<double> res;
+	res.resize(in.size());
+
+	in[0].real(in[0].real() / 2);
+	in[0].imag(-in[0].imag() / 2);
+
+	#pragma omp parallel for
+	for (int k = 1; k < in.size() / 2; k++)
+	{
+		in[k].real(in[k].real() / (in.size() / 2));
+		in[k].imag(-in[k].imag() / (in.size() / 2));
+	}
+
+	//This algorithm is iteration dependent and cannot be parallelized
+	for (int k = 0; k < in.size() / 2; k++)
+	{
+		for (int i = 0; i < in.size(); i++)
+		{
+			res[i] += in[k].real() * cos((2 * M_PI * k * i) / static_cast<double>(in.size()));
+			res[i] += in[k].imag() * sin((2 * M_PI * k * i) / static_cast<double>(in.size()));
+		}
+	}
+
+	return res;
+}
