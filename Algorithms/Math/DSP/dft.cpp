@@ -179,3 +179,22 @@ std::vector<std::complex<double>> complex_dft_euler(const std::vector<std::compl
 
 	return freq_domain;
 }
+
+std::vector<std::complex<double>> complex_idft_euler(const std::vector<std::complex<double>>& time_domain)
+{
+	using namespace std::complex_literals;
+	constexpr double two_pi = 2 * M_PI;
+	std::vector<std::complex<double>> freq_domain(time_domain.size());
+	const size_t sz = time_domain.size();
+
+	for (int k = 0; k < sz; k++)
+	{
+		for (int n = 0; n < sz; n++)
+		{
+			const double eval = two_pi * k * n / sz;
+			freq_domain[k] += time_domain[n] * exp(1i * eval);
+		}
+	}
+
+	return freq_domain;
+}
