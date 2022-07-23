@@ -141,3 +141,41 @@ std::vector<double> idft_calc(std::vector<std::complex<double>>& in)
 
 	return res;
 }
+
+std::vector<std::complex<double>> complex_dft(const std::vector<std::complex<double>>& time_domain)
+{
+	constexpr double two_pi = 2 * M_PI;
+    std::vector<std::complex<double>> freq_domain(time_domain.size());
+    const size_t sz = time_domain.size();
+
+    for (int k = 0; k < sz; k++)
+    {
+        for (int i = 0; i < sz; i++)
+        {
+			const double eval = 2 * M_PI * k * i / sz;
+            freq_domain[k].real(freq_domain[k].real() + time_domain[i].real() * cos(eval) + time_domain[k].imag() * sin(eval));
+            freq_domain[k].imag(freq_domain[k].imag() + time_domain[i].imag() * cos(eval) + time_domain[k].real() * sin(eval));
+        }
+    }
+
+    return freq_domain;
+}
+
+std::vector<std::complex<double>> complex_dft_euler(const std::vector<std::complex<double>>& time_domain)
+{
+	using namespace std::complex_literals;
+	constexpr double two_pi = 2 * M_PI;
+	std::vector<std::complex<double>> freq_domain(time_domain.size());
+	const size_t sz = time_domain.size();
+
+	for (int k = 0; k < sz; k++)
+	{
+		for (int n = 0; n < sz; n++)
+		{
+			const double eval = two_pi * k * n / sz;
+			freq_domain[k] += time_domain[n] * exp(-1i * eval);
+		}
+	}
+
+	return freq_domain;
+}
