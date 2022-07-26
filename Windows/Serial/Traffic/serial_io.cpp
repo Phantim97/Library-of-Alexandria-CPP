@@ -6,8 +6,10 @@ std::vector<std::string> cmds {"EXEC", "DO", "SOMETHING", "BEEP", "BOOP"};
 
 int main()
 {
+	//Constructor Initialization
 	Embedded e("COM6");
 
+	//COM Port after declaration
 	Embedded e2;
 	e2.open("COM7");
 	
