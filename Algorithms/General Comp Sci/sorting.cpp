@@ -3,11 +3,11 @@
 
 void selection_sort(std::vector<int>& v)
 {
-    for(int i=0;i< v.size();i++)
+    for(int i = 0; i < v.size(); i++)
     {
         int min = i;
 
-        for(int j=i+1;j< v.size();j++)
+        for(int j = i+1; j < v.size(); j++)
         {
             if (v[j] < v[min])
             {
@@ -24,9 +24,9 @@ void selection_sort(std::vector<int>& v)
 
 void bubble_sort(std::vector<int>& v)
 {
-    for (int i = 0;i< v.size();i++)
+    for (int i = 0; i< v.size(); i++)
     {
-        for(int j = 0;j< v.size()-i-1;j++)
+        for(int j = 0; j< v.size()-i-1; j++)
         {
             if (v[j] > v[j+1])
             {
@@ -96,7 +96,7 @@ void quick_sort(std::vector<int>& v)
     std::vector<int> left;
     std::vector<int> right;
 
-    for(int i=1;i< v.size();i++)
+    for(int i=1; i < v.size(); i++)
     {
         if (v[i] < pivot)
         {
@@ -112,7 +112,7 @@ void quick_sort(std::vector<int>& v)
     quick_sort(right);
 
     int i = 0;
-    for(int j=0;j< left.size();j++)
+    for(int j = 0; j < left.size(); j++)
     {
         v[i] = left[j];
         i++;
@@ -121,7 +121,7 @@ void quick_sort(std::vector<int>& v)
     v[i] = pivot;
     i++;
 
-    for(int j=0;j< right.size();j++)
+    for(int j = 0 ;j < right.size(); j++)
     {
         v[i] = right[j];
         i++;
