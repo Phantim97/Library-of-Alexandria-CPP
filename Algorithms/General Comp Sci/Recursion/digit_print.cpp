@@ -2,17 +2,17 @@
 
 //Metaprogramming Variant
 template<int N>
-struct print_digits
+struct PrintDigits
 {
     static void print()
     {
-        print_digits<N/10>::print(); //Induction Hypothesis
+        PrintDigits<N/10>::print(); //Induction Hypothesis
         std::cout << N%10 << '\n'; //Induction Step
     }
 };
 
 template<>
-struct print_digits<0>
+struct PrintDigits<0>
 {
     static void print()
     {
