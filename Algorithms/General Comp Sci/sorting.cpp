@@ -127,3 +127,46 @@ void quick_sort(std::vector<int>& v)
         i++;
     }
 }
+
+#include <algorithm>
+
+void radixsort(std::vector<int>& v)
+{
+    std::vector<int> temp(v.size());
+
+    int max = *std::max_element(v.begin(), v.end());
+
+    for (int exp = 1; max / exp > 0; exp *= 10)
+    {
+        std::vector<int> count(10);
+
+        for (int i = 0; i < v.size(); i++)
+        {
+            count[(v[i] / exp) % 10]++;
+        }
+
+        for (int i = 1; i < 10; i++)
+        {
+            count[i] += count[i - 1];
+        }
+
+        for (int i = v.size() - 1; i >= 0; i--)
+        {
+            temp[count[(v[i] / exp) % 10] - 1] = v[i];
+            count[(v[i] / exp) % 10]--;
+        }
+
+        for (int i = 0; i < v.size(); i++)
+        {
+            v[i] = temp[i];
+        }
+    }
+}
+
+void bogosort(std::vector<int>& v)
+{
+    while(!std::is_sorted(v.begin(), v.end()))
+    {
+        std::random_shuffle(v.begin(), v.end());
+    }
+}
