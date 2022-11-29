@@ -29,3 +29,18 @@ bool isPalindrome(int n)
     int small_number = n % (int)pow(10, (int)log10(n)) / 10;
     return isPalindrome(small_number); //Induction Hypothesis
 }
+
+bool isPalindrome(std::string s)
+{
+    if (s.size() == 0 || s.size() == 1) //Base case
+    {
+        return true;
+    }
+
+    if (s[0] != s[s.size() - 1])
+    {
+        return false;
+    }
+
+    return isPalindrome(s.substr(1, s.size() - 2)); //Induction Hypothesis
+}
