@@ -7,5 +7,5 @@ int str_to_int(char* str)
 
     int last_digit = *str - '0';
     int small_number = str_to_int(str + 1); //Induction Hypothesis
-    return small_number * 10 + last_digit;
+    return small_number * 10 + last_digit; //Induction Step
 }
