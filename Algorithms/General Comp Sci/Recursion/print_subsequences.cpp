@@ -4,7 +4,7 @@ void print_all_subsequences(char* str)
 {
     if (*str == '\0') //Base case
     {
-        std::cout << '\n';
+        std::cout << str << '\n';
         return;
     }
 
