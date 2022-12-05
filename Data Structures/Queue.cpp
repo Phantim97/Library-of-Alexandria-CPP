@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <stack> //For reverse
 template <typename T>
 class Queue
 {
@@ -66,5 +66,21 @@ public:
     T front() const
     {
         return arr_[front_];
+    }
+    
+    //Reverse using a placeholoder stack
+    void reverse()
+    {
+        std::stack<T> s;
+        while (!empty())
+        {
+            s.push(front());
+            dequeue();
+        }
+        while (!s.empty())
+        {
+            enqueue(s.top());
+            s.pop();
+        }
     }
 };
