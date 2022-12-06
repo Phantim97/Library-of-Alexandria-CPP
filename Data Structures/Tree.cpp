@@ -1,12 +1,15 @@
+#include <vector>
+#include <iostream>
 
 template <typename T>
 class TreeNode
 {
 private:
     T data_;
-    std::vector<TreeNode<T>*> children;
 
 public:
+    std::vector<TreeNode*> children;
+
     TreeNode(T data)
     {
         this->data_ = data;
@@ -35,7 +38,7 @@ public:
     {
         return data_;
     }
-    
+
     size_t size() const
     {
         return children.size();
@@ -49,14 +52,12 @@ public:
 
 void print(TreeNode<int>* root)
 {
-    std::cout << root->data() << '\n';
-    
+    std::cout << root->data() << std::endl;
     for (int i = 0; i < root->size(); i++)
     {
-        print(root->operator[](i));
+        print(root->children[i]);
     }
 }
-
 int main()
 {
     TreeNode<int>* root = new TreeNode<int>(1);
