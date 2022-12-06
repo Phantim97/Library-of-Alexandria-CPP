@@ -77,6 +77,23 @@ public:
 
         return max_height + 1;
     }
+    
+    size_t print_at_depth(const int depth) const
+    {
+        if (depth == 0)
+        {
+            std::cout << data_ << " ";
+            return 1;
+        }
+
+        size_t count = 0;
+        for (int i = 0; i < children.size(); i++)
+        {
+            count += children[i]->print_at_depth(depth - 1);
+        }
+
+        return count;
+    }
 };
 
 void print(TreeNode<int>* root)
