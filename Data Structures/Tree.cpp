@@ -121,7 +121,7 @@ void preorder(TreeNode<int>* root)
     }
 }
 
-//post-order traversal is where we visit the left node first, then the root
+//post-order traversal is where we visit the children first, then the root
 void postorder(TreeNode<int>* root)
 {
     if (root == nullptr)
