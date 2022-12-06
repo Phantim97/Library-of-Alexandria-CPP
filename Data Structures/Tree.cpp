@@ -105,6 +105,38 @@ void print(TreeNode<int>* root)
     }
 }
 
+// pre-order traversal is where we visit the root node first, then the left
+void preorder(TreeNode<int>* root)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    std::cout << root->data() << ' ';
+    
+    for (int i = 0; i < root->size(); i++)
+    {
+        preorder(root->children[i]);
+    }
+}
+
+//post-order traversal is where we visit the left node first, then the root
+void postorder(TreeNode<int>* root)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    for (int i = 0; i < root->size(); i++)
+    {
+        postorder(root->children[i]);
+    }
+    
+    std::cout << root->data() << ' ';
+}
+
 int main()
 {
     TreeNode<int>* root = new TreeNode<int>(1);
