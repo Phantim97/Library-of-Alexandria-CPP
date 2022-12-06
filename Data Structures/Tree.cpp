@@ -48,6 +48,35 @@ public:
     {
         return children[idx];
     }
+    
+        size_t count_nodes() const
+    {
+        size_t count = 1;
+
+        for (int i = 0; i < children.size(); i++)
+        {
+            count += children[i]->count_nodes();
+        }
+
+        return count;
+    }
+    
+    size_t height() const
+    {
+        size_t max_height = 0;
+
+        for (int i = 0; i < children.size(); i++)
+        {
+            size_t child_height = children[i]->height();
+            
+            if (child_height > max_height)
+            {
+                max_height = child_height;
+            }
+        }
+
+        return max_height + 1;
+    }
 };
 
 void print(TreeNode<int>* root)
@@ -58,6 +87,7 @@ void print(TreeNode<int>* root)
         print(root->children[i]);
     }
 }
+
 int main()
 {
     TreeNode<int>* root = new TreeNode<int>(1);
