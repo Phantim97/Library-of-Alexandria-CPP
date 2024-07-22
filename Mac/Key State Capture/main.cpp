@@ -9,6 +9,8 @@
 
 static std::atomic<bool> break_listener(false);
 
+static uint64_t modifier_state = 0;
+
 //Making the name similar to Win32
 CGEventRef GetAsyncKeyState(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon)
 {
