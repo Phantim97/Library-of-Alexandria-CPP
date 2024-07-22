@@ -5,7 +5,7 @@
 #ifndef LIBRARY_OF_ALEXANDRIA_CPP_VIRTUAL_KEYS_H
 #define LIBRARY_OF_ALEXANDRIA_CPP_VIRTUAL_KEYS_H
 
-//These are not the win32 keys for the sake of preserving the #defines I'm just mapping them to the HID usage keys
+//MacOS Virtual Key Mappings
 typedef size_t VirtualKey;
 
 // Number Defines
