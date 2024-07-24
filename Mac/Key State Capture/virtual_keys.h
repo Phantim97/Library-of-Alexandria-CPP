@@ -55,14 +55,15 @@ static constexpr VirtualKey VK_RSHIFT = 0x3C;
 static constexpr VirtualKey VK_LCONTROL = 0x3B;
 static constexpr VirtualKey VK_RCONTROL = 0x3E;
 static constexpr VirtualKey VK_ESCAPE = 0x35;
-static constexpr VirtualKey VK_COMMAND_L = 0x37; //MacOS C
-static constexpr VirtualKey VK_OPTION_L = 0x3A; //MacOS Option Key
-static constexpr VirtualKey VK_COMMAND_R = 0x36;
-static constexpr VirtualKey VK_OPTION_R = 0x3D; //MacOS Option Key
+static constexpr VirtualKey VK_LCOMMAND = 0x37; //MacOS C
+static constexpr VirtualKey VK_LOPTION = 0x3A; //MacOS Option Key
+static constexpr VirtualKey VK_RCOMMAND = 0x36;
+static constexpr VirtualKey VK_ROPTION = 0x3D; //MacOS Option Key
 static constexpr VirtualKey VK_DELETE = 0x75;
 static constexpr VirtualKey VK_PAGE_UP = 0x74;
 static constexpr VirtualKey VK_PAGE_DOWN = 0x79;
 static constexpr VirtualKey VK_INSERT = 0x72;
+static constexpr VirtualKey VK_CAPITAL = 0x39; //Caps lock
 
 //OEM Keys
 static constexpr VirtualKey VK_OEM_1 = 0x29; // ;:;

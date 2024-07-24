@@ -5,10 +5,11 @@
 #include <iostream>
 #include <thread>
 #include <atomic>
+#include <unordered_map>
 #include "virtual_keys.h"
 
 static std::atomic<bool> break_listener(false);
-
+std::unordered_map<VirtualKey, bool> key_states;
 static uint64_t modifier_state = 0;
 
 //Making the name similar to Win32
@@ -16,10 +17,12 @@ CGEventRef GetAsyncKeyState(CGEventTapProxy proxy, CGEventType type, CGEventRef 
 {
 	if (type == kCGEventKeyDown)
 	{
-		const CGKeyCode keyCode = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
-		std::cout << "Key pressed: 0x" << std::hex << (keyCode) << '\n'; //Note some utility keys trigger twice
+		const CGKeyCode key_code = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
+		std::cout << "Key pressed: 0x" << std::hex << (key_code) << '\n'; //Note some utility keys trigger twice
 
-		if (keyCode == VK_ESCAPE)
+		key_states[key_code] = true;
+
+		if (key_code == VK_ESCAPE)
 		{
 			break_listener = true;
 			if (refcon != nullptr)
@@ -37,6 +40,37 @@ CGEventRef GetAsyncKeyState(CGEventTapProxy proxy, CGEventType type, CGEventRef 
 	else if (type == kCGEventFlagsChanged)
 	{
 		const uint64_t modifier_state_current = CGEventGetFlags(event);
+		const VirtualKey key = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
+		uint64_t modifier_change = modifier_state ^ modifier_state_current;
+
+		if (modifier_change & kCGEventFlagMaskShift)
+		{
+			key_states[VK_LSHIFT] = (modifier_state_current & kCGEventFlagMaskShift) && (key == VK_LSHIFT) && modifier_state_current != 0x100;
+			key_states[VK_RSHIFT] = (modifier_state_current & kCGEventFlagMaskShift) && (key == VK_RSHIFT) && modifier_state_current != 0x100;
+		}
+		if (modifier_change & kCGEventFlagMaskControl)
+		{
+			key_states[VK_LCONTROL] = (modifier_state_current & kCGEventFlagMaskControl) && (key == VK_LCONTROL) && modifier_state_current != 0x100;
+			key_states[VK_RCONTROL] = (modifier_state_current & kCGEventFlagMaskControl) && (key == VK_RCONTROL) && modifier_state_current != 0x100;
+		}
+		if (modifier_change & kCGEventFlagMaskCommand)
+		{
+			key_states[VK_LCOMMAND] = (modifier_state_current & kCGEventFlagMaskCommand) && (key == VK_LCOMMAND) && modifier_state_current != 0x100;
+			key_states[VK_RCOMMAND] = (modifier_state_current & kCGEventFlagMaskCommand) && (key == VK_RCOMMAND) && modifier_state_current != 0x100;
+		}
+		if (modifier_change & kCGEventFlagMaskAlternate)
+		{
+			key_states[VK_LOPTION] = (modifier_state_current & kCGEventFlagMaskAlternate) && (key == VK_LOPTION) && modifier_state_current != 0x100;
+			key_states[VK_ROPTION] = (modifier_state_current & kCGEventFlagMaskAlternate) && (key == VK_ROPTION) && modifier_state_current != 0x100;
+		}
+		if (modifier_change & kCGEventFlagMaskAlphaShift)
+		{
+			if (key == VK_CAPITAL) {
+				// Toggle the Caps Lock state
+				key_states[VK_CAPITAL] = !key_states[VK_CAPITAL];
+			}
+			//key_states[VK_CAPITAL] = (modifier_state_current & kCGEventFlagMaskAlphaShift) && (key == VK_CAPITAL); //The nature of caps lock means this checks while toggled
+		}
 
 		if (modifier_state_current != modifier_state)
 		{
@@ -44,8 +78,24 @@ CGEventRef GetAsyncKeyState(CGEventTapProxy proxy, CGEventType type, CGEventRef 
 			modifier_state = modifier_state_current;
 		}
 	}
+	else if (type == kCGEventKeyUp)
+	{
+		const CGKeyCode key_code = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
+		key_states[key_code] = false;
+	}
 
 	return event;
+}
+
+bool key_pressed(VirtualKey key)
+{
+	std::unordered_map<VirtualKey, bool>::iterator it = key_states.find(key);
+	if (it != key_states.end())
+	{
+		return it->second;
+	}
+
+	return false;
 }
 
 //Note for a listen thread I had to put all the CG/CF logic into the same function otherwise CFRunLoop() hangs
@@ -97,6 +147,56 @@ int main()
 
 	while (!break_listener)
 	{
+		if (key_pressed(VK_ESCAPE))
+		{
+			std::cout << "Escape key is pressed\n";
+		}
+
+		if (key_pressed(VK_LSHIFT))
+		{
+			std::cout << "Left Shift key is pressed.\n";
+		}
+
+		if (key_pressed(VK_RSHIFT))
+		{
+			std::cout << "Right Shift key is pressed.\n";
+		}
+
+		if (key_pressed(VK_LCONTROL))
+		{
+			std::cout << "Left Control key is pressed.\n";
+		}
+
+		if (key_pressed(VK_RCONTROL))
+		{
+			std::cout << "Right Control key is pressed.\n";
+		}
+
+		if (key_pressed(VK_LOPTION))
+		{
+			std::cout << "Left Option key is pressed.\n";
+		}
+
+		if (key_pressed(VK_ROPTION))
+		{
+			std::cout << "Right Option key is pressed.\n";
+		}
+
+		if (key_pressed(VK_LCOMMAND))
+		{
+			std::cout << "Left Command key is pressed.\n";
+		}
+
+		if (key_pressed(VK_RCOMMAND))
+		{
+			std::cout << "Right Command key is pressed.\n";
+		}
+
+		if (key_pressed(VK_CAPITAL))
+		{
+			std::cout << "Caps lock pressed\n";
+		}
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 
