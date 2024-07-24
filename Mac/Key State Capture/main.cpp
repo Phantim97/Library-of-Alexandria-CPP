@@ -41,7 +41,7 @@ CGEventRef GetAsyncKeyState(CGEventTapProxy proxy, CGEventType type, CGEventRef 
 	{
 		const uint64_t modifier_state_current = CGEventGetFlags(event);
 		const VirtualKey key = CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
-		uint64_t modifier_change = modifier_state ^ modifier_state_current;
+		const uint64_t modifier_change = modifier_state ^ modifier_state_current;
 
 		if (modifier_change & kCGEventFlagMaskShift)
 		{
