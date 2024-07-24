@@ -65,11 +65,7 @@ CGEventRef GetAsyncKeyState(CGEventTapProxy proxy, CGEventType type, CGEventRef 
 		}
 		if (modifier_change & kCGEventFlagMaskAlphaShift)
 		{
-			if (key == VK_CAPITAL) {
-				// Toggle the Caps Lock state
-				key_states[VK_CAPITAL] = !key_states[VK_CAPITAL];
-			}
-			//key_states[VK_CAPITAL] = (modifier_state_current & kCGEventFlagMaskAlphaShift) && (key == VK_CAPITAL); //The nature of caps lock means this checks while toggled
+			key_states[VK_CAPITAL] = (modifier_state_current & kCGEventFlagMaskAlphaShift) && (key == VK_CAPITAL); //The nature of caps lock means this checks while toggled
 		}
 
 		if (modifier_state_current != modifier_state)
