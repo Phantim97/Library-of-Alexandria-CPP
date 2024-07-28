@@ -20,8 +20,8 @@ struct VectorObject
 
 	Lines lines;
 
-    virtual std::vector<Line>::iterator begin();
-    virtual std::vector<Line>::iterator end();
+    virtual std::vector<Line>::iterator begin() { return lines.begin();};
+    virtual std::vector<Line>::iterator end() { return lines.end();};
 };
 
 struct VectorRectangle : VectorObject
@@ -53,7 +53,7 @@ struct LineToPointAdapter
     virtual Points::iterator begin() { return points.begin();}
     virtual Points::iterator end() {return points.end();}
 private:
-	Points points;
+	Points points {};
 };
 
 int main()
