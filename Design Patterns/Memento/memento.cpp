@@ -31,7 +31,7 @@ public:
         balance = m.balance;
     }
 
-    friend std::ostream &operatore<<(std::ostream &os, const BankAccount &account)
+    friend std::ostream &operator<<(std::ostream &os, const BankAccount &account)
     {
         os << "balance: " << account.balance;
         return os;
@@ -40,10 +40,11 @@ public:
 
 class BankAccount2
 {
-    int balance{0};
+    int balance = 0;
     std::vector<std::shared_ptr<Memento>> changes;
-    int current;
+    int current = 0;
 
+public:
     BankAccount2(int balance) : balance(balance)
     {
         changes.emplace_back(std::make_shared<Memento>(balance));
@@ -52,9 +53,9 @@ class BankAccount2
     std::shared_ptr<Memento> deposit(int amount)
     {
         balance += amount;
-        auto m = std::make_shared<Memento>(balance);
+        std::shared_ptr<Memento> m = std::make_shared<Memento>(balance);
         changes.push_back(m);
-        ++changes;
+        current++;
         return m;
     }
 
@@ -62,7 +63,7 @@ class BankAccount2
     {
         if (m)
         {
-            balance = m.balance;
+            balance = m->balance;
             changes.push_back(m);
             current = changes.size() - 1; //adjust current pointer
         }
@@ -116,7 +117,7 @@ int main()
     std::cout << ba << '\n';
 
     BankAccount2 b2a{100};
-    b2a.depoist(50);
+    b2a.deposit(50);
     b2a.deposit(25);
 
     b2a.undo();
