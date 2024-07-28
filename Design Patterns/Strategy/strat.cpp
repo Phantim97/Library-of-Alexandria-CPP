@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <sstream>
 
 enum class OutputFormat
 {
@@ -16,7 +17,9 @@ struct ListStrategy
 
     }
 
-    vritual void add_list_item(std::ostringstream& oss, const std::string& item) = 0;
+    virtual void add_list_item(std::ostringstream& oss, const std::string& item)
+    {
+    };
 
     virtual void end(std::ostringstream& oss)
     {
@@ -57,7 +60,7 @@ struct TextProcessor
         switch (format)
         {
         case OutputFormat::markdown:
-            list_strategy = std::make_unique<MarkDownListStrategy>();
+            list_strategy = std::make_unique<MarkDownStrategy>();
             break;
         case OutputFormat::html:
             list_strategy = std::make_unique<HTMLStrategy>();
