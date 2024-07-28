@@ -28,8 +28,8 @@ struct Relationships : RelationshipBrowser//low level
 
     void add_parent_and_child(const Person& parent, const Person& child)
     {
-        relations.push_back(parent, Relationship::parent, child);
-        relations.push_back(child, Relationship::child, parent);
+        relations.push_back({parent, Relationship::parent, child});
+        relations.push_back({child, Relationship::child, parent});
     }
 
     std::vector<Person> find_all_children_of(const std::string& name) override
@@ -38,7 +38,7 @@ struct Relationships : RelationshipBrowser//low level
         
         for (auto&& [first, rel, second] : relations)
         {
-            if (first.name() == name && rel && Relationship::parent)
+            if (first.name == name && rel == Relationship::parent)
             {
                 result.push_back(second);
             }
@@ -65,7 +65,7 @@ struct Research //high level
 
     Research(RelationshipBrowser& browser)
     {
-        for (auto& child : browser.find_all_children_of("John"))
+        for (const Person& child : browser.find_all_children_of("John"))
         {
             std::cout << "John has a child called " << child.name << '\n';
         }

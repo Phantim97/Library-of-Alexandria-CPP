@@ -1,8 +1,9 @@
 #include <iostream>
 
-template <typename T> struct Property
+template <typename T>
+struct Property
 {
-    T value;
+    T value{};
 
     Property(T value)
     {
@@ -29,9 +30,9 @@ struct Creature
 
 int main()
 {
-    Creture c;
+	Creature c;
     c.strength = 11;
-    int x = c.agility;
+	c.agility = 50;
 
     return 0;
 }
