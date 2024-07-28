@@ -40,11 +40,7 @@ public:
         return oss.str();
     }
 
-    static HtmlBuilder build(const std::string& root_name)
-    {
-        return {root_name}; // the use of {} is used to infer the type
-    }
-
+	static HtmlBuilder build(const std::string& root_name);
 };
 
 struct HtmlBuilder
@@ -74,6 +70,11 @@ struct HtmlBuilder
 
     std::string str() const { return root.str();}
 };
+
+HtmlBuilder HtmlElement::build(const std::string &root_name)
+{
+	return {root_name}; // the use of {} is used to infer the type
+}
 
 int main()
 {

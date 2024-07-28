@@ -32,6 +32,18 @@ class Person
     friend class PersonAddressBuilder;
 };
 
+std::ostream &operator<<(std::ostream &os, const Person &person)
+{
+	os << "Street address: " << person.street_addr
+	   << "\nPost code: " << person.post_code
+	   << "\nCity: " << person.city
+	   << "\nCompany name: " << person.company_name
+	   << "\nPosition: " << person.position
+	   << "\nAnnual income: " << person.annual_income;
+	return os;
+}
+
+
 //----------------------------------------------------
 class PersonBuilderBase
 {
@@ -46,8 +58,8 @@ class PersonBuilderBase
         return std::move(person);
     }
 
-    PersonAddressBuilder lives() const;
-    PersonJobBuilder works() const;
+    PersonAddressBuilder lives();
+    PersonJobBuilder works();
 };
 
 //----------------------------------------------------
@@ -67,8 +79,8 @@ PersonBuilder Person::create()
 class PersonAddressBuilder : public PersonBuilderBase
 {
     typedef PersonAddressBuilder self;
-    public:
-    PersonAddressBuilder(Person &person) : PersonBuilderBase(person) {}
+public:
+	PersonAddressBuilder(Person &person) : PersonBuilderBase(person) {}
 
     self& at(std::string street_address)
     {
@@ -91,7 +103,7 @@ class PersonAddressBuilder : public PersonBuilderBase
 //----------------------------------------------------
 class PersonJobBuilder : public PersonBuilderBase
 {
-    public:
+public:
     PersonJobBuilder(Person &p) : PersonBuilderBase(p) {}
 
     PersonJobBuilder& at(std::string company_name)
@@ -114,12 +126,22 @@ class PersonJobBuilder : public PersonBuilderBase
 };
 //----------------------------------------------------
 
+PersonAddressBuilder PersonBuilderBase::lives()
+{
+	return PersonAddressBuilder(person);
+}
+
+PersonJobBuilder PersonBuilderBase::works()
+{
+	return PersonJobBuilder(person);
+}
+
 int main()
 {
     Person p = Person::create().lives().at("123 London Road").with_post_code("SW1 1GB").in("London").works().at("PragmaSoft").as_a("Consultant").earning(10e6);
 
     //with overloaded os stream operator you can simply do:
-    //std::cout << p << '\n';
+    std::cout << p << '\n';
 
     return 0;
 }
