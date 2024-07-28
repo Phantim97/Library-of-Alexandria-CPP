@@ -1,36 +1,31 @@
 #include <iostream>
-#include <string>
 #include <vector>
-#include <memory>
 
 class Game
 {
 public:
-	Game(int num_of_players) : num_of_players(num_of_players)
+	explicit Game(int num_of_players) : num_of_players(num_of_players)
 	{
 	}
 
 	void run()
 	{
+		start(); // Initialize the game
 		while (!have_winner())
 		{
 			take_turn();
 		}
 
-
-		std::cout << "Player " << get_winner() << "wins.\n";
+		std::cout << "Player " << get_winner() << " wins.\n";
 	}
 
 protected:
-	int num_of_players;
+	int num_of_players = 0;
 	int current_player = 0;
 
 	virtual void start() = 0;
-
 	virtual bool have_winner() = 0;
-
 	virtual void take_turn() = 0;
-
 	virtual int get_winner() = 0;
 };
 
@@ -44,17 +39,17 @@ public:
 protected:
 	void start() override
 	{
-		std::cout << "starting a game of chess\n";
+		std::cout << "Starting a game of chess\n";
 	}
 
 	bool have_winner() override
 	{
-		return false;
+		return turn >= max_turns;
 	}
 
 	void take_turn() override
 	{
-		std::cout << "Turn " << turn << "taken by player " << current_player << '\n';
+		std::cout << "Turn " << turn << " taken by player " << current_player << '\n';
 		++turn;
 		current_player = (current_player + 1) % num_of_players;
 	}

@@ -3,20 +3,20 @@
 
 struct Pingable
 {
-    virtual std::wstring ping(const std::wstring& message) = 0;
+    virtual std::string ping(const std::string& message) = 0;
 };
 
 struct Pong : Pingable
 {
-    std::wsting ping(const std::wstring& message) override
+    std::string ping(const std::string& message) override
     {
-        return message + L" pong";
+        return message + " pong";
     }
 };
 
 void tryit(Pingable &p)
 {
-    std::wcout << p.ping(L"ping") << '\n';
+    std::cout << p.ping("ping") << '\n';
 }
 
 int main()
