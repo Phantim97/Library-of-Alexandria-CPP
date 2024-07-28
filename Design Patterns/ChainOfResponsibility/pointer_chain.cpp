@@ -7,9 +7,9 @@ struct Creature
     std::string name;
     int attack, defense;
 
-    Creature(const std::string& name, int attack, int defense) : name(name), attack(attack), defense(defense) {}
+    explicit Creature(const std::string& name, int attack, int defense) : name(name), attack(attack), defense(defense) {}
 
-    friend std::ostream &operator<<(std::ostream os, const Creature c)
+    friend std::ostream &operator<<(std::ostream& os, const Creature& c)
     {
         os << "Name: " << c.name << " | attack: " <<  c.attack << " | defense: " << c.defense << '\n';
         return os;
@@ -26,7 +26,7 @@ private:
 protected:
     Creature& creature;
 public:
-    CreatureModifier(Creature& creature) : creature(creature) {}
+    explicit CreatureModifier(Creature& creature) : creature(creature) {}
 
     CreatureModifier* add(CreatureModifier *cm)
     {
@@ -39,7 +39,7 @@ public:
             next = cm;
         }
         
-        return *this;
+        return this;
     }
 
     virtual void handle()
@@ -54,7 +54,7 @@ public:
 class DoubleAttackModifier : public CreatureModifier
 {
 public:
-    DoubleAttackModifier(Creature &creature) : CreatureModifier(creature) {}
+    explicit DoubleAttackModifier(Creature &creature) : CreatureModifier(creature) {}
 
     void handle() override
     {
@@ -66,7 +66,7 @@ public:
 class IncreasedDefenseModifier : public CreatureModifier
 {
 public:
-    IncreasedDefenseModifier(Creature &creature) : CreatureModifier(creature) {}
+    explicit IncreasedDefenseModifier(Creature &creature) : CreatureModifier(creature) {}
 
     void  handle() override
     {
@@ -81,11 +81,12 @@ public:
 
 class NoBonusesModifier : public CreatureModifier
 {
-    NoBonusesModifier(Creature &creature) : CreatureModifier(creature) {}
+public:
+    explicit NoBonusesModifier(Creature &creature) : CreatureModifier(creature) {}
 
     void handle() override
     {
-
+		//Do nothing, stop the chain
     }
 
 };
@@ -107,6 +108,5 @@ int main()
 
     std::cout << goblin << '\n';
 
-   
     return 0;
 }
