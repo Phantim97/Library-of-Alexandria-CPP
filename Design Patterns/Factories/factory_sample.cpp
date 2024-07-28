@@ -3,80 +3,47 @@
 #include <cmath>
 #include <ostream>
 
-enum class PointType
-{
-    cartesian,
-    polar
-};
-
 class Point
 {
-    //friend class PointFactory; //Open-closed principle violation can be removed by making constructor public
-    Point(float x, float y) : x(x), y(y) {} 
-    float x;
-    float y;
+	friend class PointFactory; // Granting access to PointFactory
+	float x, y;
 
-    class PointFactory //granted the open closed principle close principle
-    {
-        PointFactory() {}
-    public:
-        static Point NewCartesian(float x, float y)
-        {
-            return {x, y};
-        }
-
-        static Point NewPolar(float r, float theta)
-        {
-            return { r * cos(theta), r * sin(theta)};
-        }
-    };
+	Point(float x, float y) : x(x), y(y) {} // Private constructor
 
 public:
-    static PointFactory Factory;
+	class PointFactory // Inner PointFactory class
+	{
+	public:
+		static Point NewCartesian(float x, float y)
+		{
+			return {x, y};
+		}
 
-    //Factory methods
-    // static Point NewCartesian(float x, float y)
-    // {
-    //     return {x, y};
-    // }
+		static Point NewPolar(float r, float theta)
+		{
+			return {r * cos(theta), r * sin(theta)};
+		}
+	};
 
-    // static Point NewPolar(float r, float theta)
-    // {
-    //     return { r * cos(theta), r * sin(theta)};
-    // }
-    
-    friend std::ostream &operator<<(std::ostream &os, const Point &point)
-    {
-        os << "x: " << point.x << " || y: " << point.y << '\n';
+	static PointFactory Factory; // Expose the inner factory as a field
 
-        return os;
-    }
+	// Friend function to allow access to private members
+	friend std::ostream &operator<<(std::ostream &os, const Point &point)
+	{
+		os << "x: " << point.x << " || y: " << point.y;
+		return os;
+	}
 };
 
-
-/*
-class PointFactory //granted the open closed principle close principle
-{
-    PointFactory() {}
-public:
-    static Point NewCartesian(float x, float y)
-    {
-        return {x, y};
-    }
-
-    static Point NewPolar(float r, float theta)
-    {
-        return { r * cos(theta), r * sin(theta)};
-    }
-};
-*/
+// Define the static Factory field
+Point::PointFactory Point::Factory;
 
 int main()
 {
-    //Point p = PointFactory::NewPolar(5, M_PI_4); //with outer point factory
-    //Point p = Point::PointFactory::NewPolar(5, M_PI_4); //Factory where inner class is public
-    Point p = Point::Factory.NewPolar(5, M_PI_4); //Inner Factory where inner class is exposed as a field
-    std::cout << p << '\n';
+	Point p1 = Point::PointFactory::NewPolar(5, M_PI_4); // Using the inner class directly
+	Point p2 = Point::Factory.NewPolar(5, M_PI_4); // Using the exposed inner factory
+	std::cout << p1 << '\n';
+	std::cout << p2 << '\n';
 
-    return 0;
+	return 0;
 }
