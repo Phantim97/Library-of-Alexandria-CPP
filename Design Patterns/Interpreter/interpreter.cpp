@@ -54,6 +54,7 @@ std::vector<Token> lex(const std::string &input)
                 if (isdigit(input[j]))
                 {
                     buffer << input[j];
+                    buffer << input[j];
                     i++;
                 }
                 else
@@ -79,7 +80,7 @@ struct Integer : Element
     int value;
     Integer(int value) : value(value) {}
 
-    int eval() const override
+    [[nodiscard]] int eval() const override
     {
         return value;
     }
@@ -87,13 +88,13 @@ struct Integer : Element
 
 struct BinaryOperation : Element
 {
-    enum Type {addition, subtraction} type;
+    enum Type {addition, subtraction} type{};
     std::shared_ptr<Element> lhs, rhs;
 
-    int eval() const override
+    [[nodiscard]] int eval() const override
     {
-        auto left = lhs.eval();
-        auto right = rhs.eval();
+        int left = lhs->eval();
+        int right = rhs->eval();
         if (type == addition)
         {
             return left + right;
@@ -103,31 +104,34 @@ struct BinaryOperation : Element
             return left - right;
         }
     }
-}
+};
 
 std::shared_ptr<Element> parse(const std::vector<Token>& tokens)
 {
     auto result = std::make_unique<BinaryOperation>();
     bool have_lhs = false;
 
-    for (int i = 0; i < tokens.size(); i++)
+    for (size_t i = 0; i < tokens.size(); i++)
     {
-        auto& token = tokens[i];
+		const Token& token = tokens[i];
         switch (token.type)
         {
         case Token::integer:
-            int value = boost::lexical_cast<int>(token.text);
-            auto integer = std::make_shared<Integer>(value)
-            if (!have_lhs)
-            {
-                result->lhs = integer;
-                have_lhs = true;
-            }
-            else
-            {
-                result->rhs = integer;
-            }            
-            break;
+        {
+	        const int value = boost::lexical_cast<int>(token.text);
+	        std::shared_ptr<Integer> integer = std::make_shared<Integer>(value);
+
+	        if (!have_lhs)
+	        {
+		        result->lhs = integer;
+		        have_lhs = true;
+	        }
+	        else
+	        {
+		        result->rhs = integer;
+	        }
+	        break;
+        }
         case Token::plus:
             result->type = BinaryOperation::addition;
             break;
@@ -135,28 +139,31 @@ std::shared_ptr<Element> parse(const std::vector<Token>& tokens)
             result->type = BinaryOperation::subtraction;
             break;
         case Token::lparen:
-            int j = i;
-            for (int i = j; j < tokens.size(); j++)
-            {
-                if (tokens[j].type = Token::rparen)
-                {
-                    break;
-                }
-            }
+        {
+	        int j = i;
 
-            std::vector<Token> subexpression(&tokens[i+1], &tokens[j]);
-            auto element = parse(subexpression);
-            if (!have_lhs)
-            {
-                result->lhs = element;
-                have_lhs = true;
-            }
-            else
-            {
-                result->rhs = element;
-            }
-            i = j;
-            break;
+	        for (int i = j; j < tokens.size(); j++)
+	        {
+		        if (tokens[j].type == Token::rparen)
+		        {
+			        break;
+		        }
+	        }
+
+	        std::vector<Token> subexpression(&tokens[i + 1], &tokens[j]);
+	        std::shared_ptr<Element> element = parse(subexpression);
+	        if (!have_lhs)
+	        {
+		        result->lhs = element;
+		        have_lhs = true;
+	        }
+	        else
+	        {
+		        result->rhs = element;
+	        }
+	        i = j;
+	        break;
+        }
         default:
             break;
         }
@@ -167,17 +174,17 @@ int main()
 {
     std::string input{"(13-4)-(12+1)"};
 
-    auto tokens = lex(input);
+    std::vector<Token> tokens = lex(input);
 
-    for (auto& t : tokens)
+    for (const Token& t : tokens)
     {
         std::cout << t << " \n";
     }
 
     try
     {
-        auto parsed = parse(tokens);
-        std::cout << input << " = " << parse->eval() << '\n';
+        std::shared_ptr<Element> parsed = parse(tokens);
+        std::cout << input << " = " << parsed->eval() << '\n';
     }
     catch(const std::exception e)
     {
