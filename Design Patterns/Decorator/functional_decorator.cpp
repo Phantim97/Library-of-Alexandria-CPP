@@ -1,7 +1,6 @@
 #include <iostream>
 #include <functional>
 #include <string>
-#include <sstream>
 
 struct Logger
 {
