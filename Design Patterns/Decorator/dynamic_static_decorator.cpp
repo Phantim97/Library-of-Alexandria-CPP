@@ -85,7 +85,7 @@ template<typename T> struct ColoredShape2 : T
     //TransparentShape2<ColoredShape2<Square>> sq {10, "red", 44}
     //variadic templates (...) rolls out args
     template <typename...Args>
-    ColoredShape2(const std::strin color, Args ...args) : T(std::forward<Args>(args)...), color(color) {}
+    ColoredShape2(const std::string color, Args ...args) : T(std::forward<Args>(args)...), color(color) {}
 
     std::string str() const override //since T will always have a base of shape this is valid
     {
@@ -93,7 +93,7 @@ template<typename T> struct ColoredShape2 : T
         oss << T::str() << " has the color " << color;
         return oss.str();
     }
-}
+};
 
 //transparent shape is very similar
 
