@@ -4,7 +4,6 @@
 #include <sstream>
 #include <memory>
 #include <tuple>
-#include <fstream>
 
 struct Tag
 {
@@ -35,7 +34,7 @@ struct Tag
                 os << tag.text << '\n';
             }
 
-            for (const auto& child : tag.children)
+            for (const Tag& child : tag.children)
             {
                 os << child;
             }

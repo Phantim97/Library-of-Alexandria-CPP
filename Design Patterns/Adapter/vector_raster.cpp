@@ -16,8 +16,12 @@ struct Line
 
 struct VectorObject
 {
+	typedef std::vector<Line> Lines;
+
+	Lines lines;
+
     virtual std::vector<Line>::iterator begin();
-    virtual std::vector<Line::iterator end();
+    virtual std::vector<Line>::iterator end();
 };
 
 struct VectorRectangle : VectorObject
@@ -33,22 +37,24 @@ struct VectorRectangle : VectorObject
 
 std::vector<std::shared_ptr<VectorObject>> vectorObjects { 
     std::make_shared<VectorRectangle>(10,10, 100, 100),
-    std::make_shared<VectorRectangle>(30,30, 60, 60),}
+    std::make_shared<VectorRectangle>(30,30, 60, 60)
+};
 
 struct LineToPointAdapter
 {
-    typedef std::vector<Point> points;
+    typedef std::vector<Point> Points;
 
     LineToPointAdapter(Line &line)
     {
-
+		points.push_back(Point{line.start.x, line.start.y});
+		points.push_back(Point{line.start.x, line.start.y});
     }
 
     virtual Points::iterator begin() { return points.begin();}
     virtual Points::iterator end() {return points.end();}
-    private:
-    Point points;
-}
+private:
+	Points points;
+};
 
 int main()
 {

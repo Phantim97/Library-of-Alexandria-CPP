@@ -30,7 +30,7 @@ public:
             oss << std::string(indent_size * (indent + 1), ' ') << text << '\n';
         }
 
-        for (const HtmlElement e : elements)
+        for (const HtmlElement& e : elements)
         {
             oss << e.str(indent + 1);
         }
@@ -40,7 +40,7 @@ public:
         return oss.str();
     }
 
-    static HtmlBuilder build(std::string root_name)
+    static HtmlBuilder build(const std::string& root_name)
     {
         return {root_name}; // the use of {} is used to infer the type
     }
