@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <string>
-#include <sstream>
 #include <memory>
 
 class Memento
