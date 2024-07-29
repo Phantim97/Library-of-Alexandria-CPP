@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <memory>
 #include <tuple>
 
 struct Tag
@@ -12,38 +11,45 @@ struct Tag
     std::vector<Tag> children;
     std::vector<std::pair<std::string, std::string>> attributes;
 
-    friend std::ostream& operator<<(std::ostream& os, const Tag& tag)
-    {
-        os << "<" << tag.name;
+	[[nodiscard]] std::string to_string() const
+	{
+		std::ostringstream os;
+		os << "<" << name;
 
-        for (const std::pair<std::string, std::string> att : tag.attributes)
-        {
-            os << " " << att.first << "=\"" << att.second << "\'";
-        }
+		for (const std::pair<std::string, std::string>& att : attributes)
+		{
+			os << " " << att.first << "=\"" << att.second << "\"";
+		}
 
-        if (tag.children.size() == 0 && tag.text.length() == 0)
-        {
-            os << "/>\n"; 
-        }
-        else
-        {
-            os << ">\n";
+		if (children.empty() && text.empty())
+		{
+			os << "/>\n";
+		}
+		else
+		{
+			os << ">\n";
 
-            if (tag.text.length())
-            {
-                os << tag.text << '\n';
-            }
+			if (!text.empty())
+			{
+				os << text << '\n';
+			}
 
-            for (const Tag& child : tag.children)
-            {
-                os << child;
-            }
+			for (const Tag& child : children)
+			{
+				os << child.to_string();
+			}
 
-            os << "</" << tag.name << ">\n";
-        }
+			os << "</" << name << ">\n";
+		}
 
-        return os;      
-    }
+		return os.str();
+	}
+
+	friend std::ostream& operator<<(std::ostream& os, const Tag& tag)
+	{
+		os << tag.to_string();
+		return os;
+	}
 
 protected:
 public:
