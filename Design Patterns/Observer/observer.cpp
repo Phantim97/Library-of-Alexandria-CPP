@@ -51,6 +51,7 @@ public:
 		{
 			return;
 		}
+
 		this->age = a;
 		notify(*this, "a");
 	}

@@ -14,7 +14,8 @@ struct SomeNeurons
 struct Neuron : SomeNeurons<Neuron>
 {
 	std::vector<Neuron *> in, out; // vector of neuron pointers
-	unsigned int id;
+	unsigned int id = 0;
+
 	Neuron()
 	{
 		static int id = 1;

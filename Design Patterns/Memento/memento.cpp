@@ -6,7 +6,7 @@
 
 class Memento
 {
-    int balance;
+    int balance = 0;
 public:
     Memento(int balance) : balance(balance) {}
 

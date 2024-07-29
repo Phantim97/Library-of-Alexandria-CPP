@@ -6,15 +6,12 @@
 
 struct Token
 {
-enum Type
-{
-    integer,
-    plus,
-    minus,
-    lparen,
-    rparen
-};
-    Type type;
+	enum Type
+	{
+		integer, plus, minus, lparen, rparen
+	};
+
+    Type type {};
     std::string text;
 
     Token(Type type, const std::string& text) : type(type), text(text) {}
@@ -77,7 +74,7 @@ struct Element
 
 struct Integer : Element
 {
-    int value;
+    int value = 0;
     Integer(int value) : value(value) {}
 
     [[nodiscard]] int eval() const override
@@ -93,8 +90,9 @@ struct BinaryOperation : Element
 
     [[nodiscard]] int eval() const override
     {
-        int left = lhs->eval();
-        int right = rhs->eval();
+		const int left = lhs->eval();
+        const int right = rhs->eval();
+
         if (type == addition)
         {
             return left + right;
@@ -108,12 +106,13 @@ struct BinaryOperation : Element
 
 std::shared_ptr<Element> parse(const std::vector<Token>& tokens)
 {
-    auto result = std::make_unique<BinaryOperation>();
+    std::unique_ptr<BinaryOperation> result = std::make_unique<BinaryOperation>();
     bool have_lhs = false;
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
 		const Token& token = tokens[i];
+
         switch (token.type)
         {
         case Token::integer:
@@ -152,6 +151,7 @@ std::shared_ptr<Element> parse(const std::vector<Token>& tokens)
 
 	        std::vector<Token> subexpression(&tokens[i + 1], &tokens[j]);
 	        std::shared_ptr<Element> element = parse(subexpression);
+
 	        if (!have_lhs)
 	        {
 		        result->lhs = element;
@@ -161,6 +161,7 @@ std::shared_ptr<Element> parse(const std::vector<Token>& tokens)
 	        {
 		        result->rhs = element;
 	        }
+
 	        i = j;
 	        break;
         }

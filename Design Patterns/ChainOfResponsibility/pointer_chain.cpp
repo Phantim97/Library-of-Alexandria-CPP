@@ -5,7 +5,8 @@
 struct Creature
 {
     std::string name;
-    int attack, defense;
+    int attack = 0;
+	int defense = 0;
 
     explicit Creature(const std::string& name, int attack, int defense) : name(name), attack(attack), defense(defense) {}
 
@@ -14,8 +15,6 @@ struct Creature
         os << "Name: " << c.name << " | attack: " <<  c.attack << " | defense: " << c.defense << '\n';
         return os;
     }
-
-
 };
 
 //the point is to inherit this class

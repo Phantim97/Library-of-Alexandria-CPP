@@ -46,7 +46,8 @@ class BetterFormattedText
 public:
     struct TextRange
     {
-        int start, end;
+        int start = 0;
+		int end = 0;
         bool capitalize; //potential to add bold, italic, etc.
 
         [[nodiscard]] bool covers(int position) const

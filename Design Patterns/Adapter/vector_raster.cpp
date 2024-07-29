@@ -40,8 +40,11 @@ std::vector<std::shared_ptr<VectorObject>> vectorObjects {
     std::make_shared<VectorRectangle>(30,30, 60, 60)
 };
 
-struct LineToPointAdapter
+class LineToPointAdapter
 {
+private:
+	Points points {};
+public:
     typedef std::vector<Point> Points;
 
     LineToPointAdapter(Line &line)
@@ -52,8 +55,7 @@ struct LineToPointAdapter
 
     virtual Points::iterator begin() { return points.begin();}
     virtual Points::iterator end() {return points.end();}
-private:
-	Points points {};
+
 };
 
 int main()

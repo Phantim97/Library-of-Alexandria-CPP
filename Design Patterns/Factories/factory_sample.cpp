@@ -6,9 +6,10 @@
 class Point
 {
 	friend class PointFactory; // Granting access to PointFactory
-	float x, y;
+	float x = 0.0f;
+	float y = 0.0f;
 
-	Point(float x, float y) : x(x), y(y) {} // Private constructor
+	explicit Point(float x, float y) : x(x), y(y) {} // Private constructor
 
 public:
 	class PointFactory // Inner PointFactory class
