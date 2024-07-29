@@ -53,7 +53,7 @@ public:
 		}
 
 		this->age = a;
-		notify(*this, "a");
+		notify(*this, "age");
 	}
 };
 
@@ -74,7 +74,7 @@ public:
 
 int main()
 {
-	Person p{10};
+	Person p(10);
 	ConsolePersonObserver cpo;
 	p.subscribe(cpo);
 
