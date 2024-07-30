@@ -21,7 +21,7 @@ cv::Mat rgb_to_gray(const cv::Mat& img)
 
 void gaussian_blur()
 {
-	cv::Mat src = cv::imread(util::get_data_path() +"images/img.jpg");
+	cv::Mat src = cv::imread("images/img.jpg");
 
 	cv::Mat dst5x5;
 	cv::Mat dst25x25;
@@ -37,7 +37,7 @@ void gaussian_blur()
 
 void sobel_filter()
 {
-	cv::Mat src = cv::imread(util::get_data_path() +"images/img.jpg");
+	cv::Mat src = cv::imread("images/img.jpg");
 
 	cv::Mat sobelx;
 	cv::Mat sobely;

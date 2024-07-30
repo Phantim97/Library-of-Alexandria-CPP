@@ -98,7 +98,7 @@ void alpha_mask()
 
 void image_copying()
 {
-	cv::Mat img = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat img = cv::imread("images/img1.jpg");
 
 	cv::Mat img2 = img.clone(); //without clone, we are passing the ref
 }
@@ -199,7 +199,7 @@ void contrast_enhancement()
 {
 	constexpr double enhancement_percentage = 30.0;
 
-	cv::Mat image = cv::imread(util::get_data_path() + "images/img.jpg");
+	cv::Mat image = cv::imread("images/img.jpg");
 	cv::Mat contrastHigh = image;
 
 	contrastHigh.convertTo(contrastHigh, CV_64F);
@@ -209,7 +209,7 @@ void contrast_enhancement()
 
 void brightness_enhancement()
 {
-	cv::Mat image = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image = cv::imread("images/img1.jpg");
 
 	constexpr double brightness_offset = 50;
 	constexpr size_t num_channels = 3;
@@ -240,7 +240,7 @@ void brightness_enhancement()
 
 void image_type_conversion()
 {
-	cv::Mat image = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image = cv::imread("images/img1.jpg");
 
 	constexpr double scaling_factor = 1 / 255.0;
 	constexpr double shift = 0; //How much to shift values by
@@ -253,7 +253,7 @@ void image_type_conversion()
 
 void typing_examples()
 {
-	cv::Mat image = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image = cv::imread("images/img1.jpg");
 
 	//This part clips pixel values
 	uint8_t data[] = { 100,110,120,130 };
@@ -297,7 +297,7 @@ void typing_examples()
 
 void brightness_and_contrast()
 {
-	cv::Mat image = cv::imread(util::get_data_path() + "images/img.jpg");
+	cv::Mat image = cv::imread("images/img.jpg");
 
 	double alpha = 1.0; /*< Simple contrast control */
 	int beta = 0;       /*< Simple brightness control */
@@ -336,7 +336,7 @@ void brightness_and_contrast()
 
 void gamma_correction()
 {
-	cv::Mat image = cv::imread(util::get_data_path() + "images/img2.jpg");
+	cv::Mat image = cv::imread("images/img2.jpg");
 
 	double gamma = 0.0;
 	std::cout << "Enter Gamma: ";
@@ -359,7 +359,7 @@ void gamma_correction()
 //Annotating Images
 void line_draw()
 {
-	cv::Mat image_line = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image_line = cv::imread("images/img1.jpg");
 
 	cv::line(image_line, cv::Point(200, 80), cv::Point(280, 80), cv::Scalar(255, 0, 0), cv::LINE_AA);
 	cv::imwrite("images/img_line.jpg", image_line);
@@ -367,14 +367,14 @@ void line_draw()
 
 void circle_draw()
 {
-	cv::Mat image_circle = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image_circle = cv::imread("images/img1.jpg");
 	cv::circle(image_circle, cv::Point(250, 150), 100, cv::Scalar(255, 0, 0), cv::LINE_AA);
 	cv::imwrite("images/img_circle.jpg", image_circle);
 }
 
 void filled_circle()
 {
-	cv::Mat image_filled_circle = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image_filled_circle = cv::imread("images/img1.jpg");
 
 	//-1 thickness fills in the circle
 	cv::circle(image_filled_circle, cv::Point(250, 150), 100, cv::Scalar(255, 0, 0), -1, cv::LINE_AA);
@@ -384,7 +384,7 @@ void filled_circle()
 
 void ellipse_draw()
 {
-	cv::Mat image_ellipse = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image_ellipse = cv::imread("images/img1.jpg");
 
 	cv::ellipse(image_ellipse, cv::Point(250, 125), cv::Point(100, 50),
 	            0, 0, 360, cv::Scalar(255, 0, 0),3, cv::LINE_AA);
@@ -397,7 +397,7 @@ void ellipse_draw()
 
 void ellipse_draw2()
 {
-	cv::Mat image_ellipse2 = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image_ellipse2 = cv::imread("images/img1.jpg");
 
 	// Incomplete/Open ellipse
 	cv::ellipse(image_ellipse2, cv::Point(250, 125), cv::Point(100, 50), 0, 180, 360,
@@ -412,7 +412,7 @@ void ellipse_draw2()
 
 void rectangle_draw()
 {
-	cv::Mat image_rectangle = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image_rectangle = cv::imread("images/img1.jpg");
 
 	cv::rectangle(image_rectangle, cv::Point(170, 50), cv::Point(300, 200),
 	              cv::Scalar(255, 0, 255), 5, cv::LINE_8);
@@ -422,7 +422,7 @@ void rectangle_draw()
 
 void text_write()
 {
-	cv::Mat image_text = cv::imread(util::get_data_path() + "images/img1.jpg");
+	cv::Mat image_text = cv::imread("images/img1.jpg");
 	cv::Mat image_font_scale = image_text.clone(); //font scaling example
 	cv::Mat image_get_size_text = image_text.clone(); //get size example
 
@@ -513,7 +513,7 @@ void draw_circle(const int action, const int x, const int y, const int flags, vo
 
 void callback_example()
 {
-	source = cv::imread(util::get_data_path() + "images/img.jpg");
+	source = cv::imread("images/img.jpg");
 
 	//Dummy image to be used while drawing
 	const cv::Mat dummy = source.clone();
