@@ -3,49 +3,52 @@
 
 struct Image
 {
-    virtual void Draw() = 0;
+	virtual void Draw() = 0;
 };
 
 struct Bitmap : Image
 {
-    Bitmap(const std::string &filename)
-    {
-        std::cout << "Loading bitmap from " << filename << '\n';
-    }
+	Bitmap(const std::string &filename)
+	{
+		std::cout << "Loading bitmap from " << filename << '\n';
+	}
 
-    void Draw() override
-    {
-        std::cout << "Drawing bitmap\n";
-    }
+	void Draw() override
+	{
+		std::cout << "Drawing bitmap\n";
+	}
 };
+
 struct LazyBitmap : Image
 {
 private:
-    std::string filename;
-    Bitmap *bmp = nullptr;
+	std::string filename;
+	Bitmap *bmp = nullptr;
 
 public:
-    LazyBitmap(const std::string &filename) : filename(filename) {}
+	LazyBitmap(const std::string &filename) : filename(filename)
+	{
+	}
 
-    ~LazyBitmap() 
-    {
-        delete bmp;
-    }
+	~LazyBitmap()
+	{
+		delete bmp;
+	}
 
-    void Draw() override
-    {
-        if (!bmp)
-        {
-            bmp = new Bitmap(filename);
-        }
+	void Draw() override
+	{
+		if (!bmp)
+		{
+			bmp = new Bitmap(filename);
+		}
 
-        bmp->Draw();
-    }
+		bmp->Draw();
+	}
 };
 
 int main()
 {
-    LazyBitmap bmp{"test.png"};
-    bmp.Draw();
-    return 0;
+	LazyBitmap bmp {"test.png"};
+	bmp.Draw();
+	return 0;
 }

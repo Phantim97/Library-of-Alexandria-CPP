@@ -21,7 +21,7 @@ public:
 		y = b;
 	}
 
-	void print()
+	void print() const
 	{
 		std::cout << "X: " << x << " || " << "Y: " << y << '\n';
 	}
@@ -48,12 +48,14 @@ public:
  * changes.
  */
 
-class Subject : public ISubject {
+class Subject : public ISubject
+{
 private:
 	std::list<IObserver*> list_observer_;
 	std::string message_;
 public:
-	virtual ~Subject() {
+	virtual ~Subject()
+	{
 		std::cout << "Goodbye, I was the Subject.\n";
 	}
 
@@ -69,31 +71,40 @@ public:
 	{
 		list_observer_.remove(observer);
 	}
+
 	void Notify() override
 	{
 		std::list<IObserver*>::iterator iterator = list_observer_.begin();
+
 		HowManyObserver();
-		while (iterator != list_observer_.end()) {
+
+		while (iterator != list_observer_.end())
+		{
 			(*iterator)->Update(message_);
 			++iterator;
 		}
 	}
 
-	void CreateMessage(std::string message = "Empty") {
+	void CreateMessage(std::string message = "Empty")
+	{
 		this->message_ = message;
 		Notify();
 	}
-	void HowManyObserver() {
+
+	void HowManyObserver() const
+	{
 		std::cout << "There are " << list_observer_.size() << " observers in the list.\n";
 	}
 
-	/**
+	/*
 	 * Usually, the subscription logic is only a fraction of what a Subject can
 	 * really do. Subjects commonly hold some important business logic, that
 	 * triggers a notification method whenever something important is about to
 	 * happen (or after it).
 	 */
-	void SomeBusinessLogic() {
+
+	void SomeBusinessLogic()
+	{
 		this->message_ = "change message message";
 		Notify();
 		std::cout << "I'm about to do some thing important\n";
@@ -110,39 +121,46 @@ private:
 	static int static_number_;
 	int number_;
 public:
-	Observer(Subject& subject) : subject_(subject) {
+	Observer(Subject& subject) : subject_(subject)
+	{
 		this->subject_.Attach(this);
 		std::cout << "Hi, I'm the Observer \"" << ++Observer::static_number_ << "\".\n";
 		this->number_ = Observer::static_number_;
 	}
-	virtual ~Observer() {
+
+	virtual ~Observer()
+	{
 		std::cout << "Goodbye, I was the Observer \"" << this->number_ << "\".\n";
 	}
 
-	void Update(const std::string& message_from_subject) override {
+	void Update(const std::string& message_from_subject) override
+	{
 		message_from_subject_ = message_from_subject;
 		PrintInfo();
 	}
-	void RemoveMeFromTheList() {
+
+	void RemoveMeFromTheList()
+	{
 		subject_.Detach(this);
 		std::cout << "Observer \"" << number_ << "\" removed from the list.\n";
 	}
-	void PrintInfo() {
+
+	void PrintInfo() const
+	{
 		std::cout << "Observer \"" << this->number_ << "\": a new message is available --> " << this->message_from_subject_ << "\n";
 	}
-
-
 };
 
 int Observer::static_number_ = 0;
 
-void ClientCode() {
+void ClientCode()
+{
 	Subject* subject = new Subject;
 	Observer* observer1 = new Observer(*subject);
 	Observer* observer2 = new Observer(*subject);
 	Observer* observer3 = new Observer(*subject);
-	Observer* observer4;
-	Observer* observer5;
+	Observer* observer4 = nullptr;
+	Observer* observer5 = nullptr;
 
 	subject->CreateMessage("Hello World! :D");
 	observer3->RemoveMeFromTheList();
@@ -167,7 +185,8 @@ void ClientCode() {
 	delete subject;
 }
 
-int main() {
+int main()
+{
 	ClientCode();
 	return 0;
 }

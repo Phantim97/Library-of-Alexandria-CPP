@@ -1,3 +1,5 @@
+#include "Bitmap.h"
+
 Bitmap::Bitmap(int width, int height) : m_pPixels(new uint8_t[width * height * 3]{}) // height and width for each color and 3 colors for RGB
 	{
 		this->m_width = width;

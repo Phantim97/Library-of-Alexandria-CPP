@@ -16,9 +16,9 @@ struct Address
 
     Address (const Address &other) : street(other.street), city(other.city), suite(other.suite) {}
 
-    friend std::ostream &operator<<(std::ostream os, const Address& address)
+    friend std::ostream& operator<<(std::ostream& os, const Address& address)
     {
-        std::cout << "street: " << address.street << " city: " << address.city << " suite: " << address.suite;
+        os << "street: " << address.street << " city: " << address.city << " suite: " << address.suite;
         return os;
     }
 };
@@ -28,11 +28,11 @@ struct Contact
     std::string name;
     Address* address;
 
-    Contact(const std::string& name, const Address *address) : name(name), address(address) {}
+    Contact(const std::string& name, Address *address) : name(name), address(address) {}
 
     Contact (const Contact& other) : name(other.name), address (new Address { *other.address}){} //copy constructor in address allows to pass the address as pattern
 
-    friend std::ostream operator&<<(std::ostream os, const Contact &contact)
+    friend std::ostream& operator<<(std::ostream& os, const Contact &contact)
     {
         std::cout << "name " << contact.name << " address " << *contact.address;
         return os;

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <functional>
 #include <string>
-#include <sstream>
 
 struct Logger
 {
@@ -67,7 +66,7 @@ struct Logger3<R(Args...)>
 };
 
 template <typename R, typename... Args>
-auto make_logger3(R (*func)(Args...), const std::string& name)
+Logger3<R(Args...)> make_logger3(R (*func)(Args...), const std::string& name)
 {
     return Logger3<R(Args...)>(std::function<R(Args...)>(func), name);
 }
@@ -76,11 +75,12 @@ int main()
 {
     Logger([]() {std::cout << "Hello\n";}, "HelloFunction")();
 
+	//auto needed for type deduction of template
     auto log = make_logger2([]() {std::cout << "Hello\n";}, "HelloFunction");
     log();
 
-    auto logged_add = make_logger3(add, "AddFunction");
-    auto result = logged_add(2.0, 3.0);
+    Logger3<double(double, double)> logged_add = make_logger3(add, "AddFunction");
+    double result = logged_add(2.0, 3.0);
     std::cout << result << '\n';
     return 0;
 }

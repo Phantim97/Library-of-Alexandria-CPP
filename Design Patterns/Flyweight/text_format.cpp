@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <utility>
 #include <vector>
 #include <memory>
 
@@ -45,10 +46,11 @@ class BetterFormattedText
 public:
     struct TextRange
     {
-        int start, end;
+        int start = 0;
+		int end = 0;
         bool capitalize; //potential to add bold, italic, etc.
 
-        bool covers(int position) const
+        [[nodiscard]] bool covers(int position) const
         {
             return position >= start && position <= end;
         }
@@ -56,11 +58,11 @@ public:
 
     TextRange& get_range(int start, int end)
     {
-        formatting.emplace_back(TextRande(start, end));
+        formatting.emplace_back(TextRange{start, end});
         return *formatting.rbegin();
     }
 
-    BetterFormattedText(const std::string &plain_text) : plain_text(plain_text) {}
+    BetterFormattedText(std::string plain_text) : plain_text(std::move(plain_text)) {}
 
     friend std::ostream &operator<<(std::ostream &os, const BetterFormattedText &text)
     {
@@ -93,7 +95,7 @@ int main()
     std::cout << ft << '\n';
 
     BetterFormattedText bft{"This is a brave new world"};
-    bft.get_range(10,15).capitalize(true);
+    bft.get_range(10,15).capitalize = true;
     
     std::cout << bft << '\n';
 

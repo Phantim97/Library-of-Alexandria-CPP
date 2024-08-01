@@ -2,96 +2,98 @@
 #include <string>
 #include <vector>
 
-struct Document;
+struct Document
+{
+	std::string text;
+	Document(const std::string& text) : text(text) {}
+};
 
 struct IMachine
 {
-  virtual void print(Document& doc) = 0;
-  virtual void scan(Document& doc) = 0;
-  virtual void fax(Document& doc) = 0;
+	virtual void print(Document& doc) = 0;
+	virtual void scan(Document& doc) = 0;
+	virtual void fax(Document& doc) = 0;
 };
 
 struct MFP : IMachine
 {
-  virtual void print(Document& doc) override
-  {
-    //ok
-  }
-  virtual void scan(Document& doc) override
-  {
-    //ok
-  }
-  virtual void fax(Document& doc) override
-  {
-    //ok
-  }
+	void print(Document& doc) override
+	{
+		std::cout << "Printing document: " << doc.text << std::endl;
+	}
 
+	void scan(Document& doc) override
+	{
+		std::cout << "Scanning document: " << doc.text << std::endl;
+	}
+
+	void fax(Document& doc) override
+	{
+		std::cout << "Faxing document: " << doc.text << std::endl;
+	}
 };
 
-// struct Scanner : IMachine
-// {
-//  virtual void print(Document& doc) override
-//   {
-    
-//   }
-//   virtual void scan(Document& doc) override
-//   {
-//     //ok
-//   }
-//   virtual void fax(Document& doc) override
-//   {
-    
-//   }
-// };
-  
 struct IPrinter
 {
-  virtual void print(Document &doc) = 0;
+	virtual void print(Document &doc) = 0;
 };
 
 struct IScanner
 {
-  virtual void scan(Document &doc) = 0;
+	virtual void scan(Document &doc) = 0;
 };
 
 struct Printer : IPrinter
 {
-  virtual void print (Document &doc) override
-  {
-
-  }
+	void print(Document &doc) override
+	{
+		std::cout << "Printing document: " << doc.text << std::endl;
+	}
 };
 
 struct Scanner : IScanner
 {
-  virtual void scan(Document &doc)
-  {
-
-  }
+	void scan(Document &doc) override
+	{
+		std::cout << "Scanning document: " << doc.text << std::endl;
+	}
 };
 
 struct IMachine2 : IPrinter, IScanner {};
 
 struct Machine : IMachine2
 {
-  IPrinter& printer;
-  IScanner& scanner;
+	IPrinter& printer;
+	IScanner& scanner;
 
-  Machine(IPrinter &printer, IScanner &scanner) : printer(printer), scanner(scanner) {}
+	Machine(IPrinter &printer, IScanner &scanner) : printer(printer), scanner(scanner) {}
 
-  void print(Document &doc) override
-  {
-    printer.print(doc);
-  }
+	void print(Document &doc) override
+	{
+		printer.print(doc);
+	}
 
-  void scan(Document &doc) override
-  {
-    scanner.scan(doc);
-  }
+	void scan(Document &doc) override
+	{
+		scanner.scan(doc);
+	}
 };
-  
+
 int main()
 {
+	Document doc("Hello, world!");
 
-  return 0;
+	Printer printer;
+	Scanner scanner;
+
+	Machine machine(printer, scanner);
+	machine.print(doc);
+	machine.scan(doc);
+
+	MFP mfp;
+	mfp.print(doc);
+	mfp.scan(doc);
+	mfp.fax(doc);
+
+	return 0;
 }

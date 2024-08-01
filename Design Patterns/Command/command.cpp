@@ -86,11 +86,11 @@ struct BankAccountCommand : Command
 
 struct CompositeBankAccountCommand : std::vector<BankAccountCommand>, Command
 {
-    CompositeBankAccountCommand(const std::initializer_list<BankAccountCommand> &items) : std::vector(items) {}
+    CompositeBankAccountCommand(const std::initializer_list<BankAccountCommand> &items) : std::vector<BankAccountCommand>(items) {}
 
     void call() override
     {
-        for (auto& cmd : *this)
+        for (BankAccountCommand& cmd : *this)
         {
             cmd.call();
         }
@@ -103,7 +103,7 @@ struct CompositeBankAccountCommand : std::vector<BankAccountCommand>, Command
             it->undo();
         }
     }
-}
+};
 
 struct MoneyTransferCommand : CompositeBankAccountCommand
 {

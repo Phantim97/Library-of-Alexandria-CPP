@@ -1,37 +1,38 @@
 #include <iostream>
 
-template <typename T> struct Property
+template<typename T>
+struct Property
 {
-    T value;
+	T value {};
 
-    Property(T value)
-    {
-        *this = value;
-    }
+	Property(T value)
+	{
+		*this = value;
+	}
 
-    operator T()
-    {
-        return value;
-    }
+	operator T()
+	{
+		return value;
+	}
 
-    T operator=(T new_value) //this is where assignment happens
-    {
-        std::cout << "Assignment\n";
-        return value = new_value;
-    }
+	T operator=(T new_value) //this is where assignment happens
+	{
+		std::cout << "Assignment\n";
+		return value = new_value;
+	}
 };
 
 struct Creature
-{  
-    Property<int> strength{10};
-    Property<int> agility{10};
+{
+	Property<int> strength {10};
+	Property<int> agility {10};
 };
 
 int main()
 {
-    Creture c;
-    c.strength = 11;
-    int x = c.agility;
+	Creature c;
+	c.strength = 11;
+	c.agility = 50;
 
-    return 0;
+	return 0;
 }
