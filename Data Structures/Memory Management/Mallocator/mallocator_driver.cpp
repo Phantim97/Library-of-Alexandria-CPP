@@ -11,7 +11,7 @@ void mallocator_ex()
 
 	//Read numbers from stdin
 	int n = 0;
-	size_t input_sz = 10;
+	constexpr size_t input_sz = 10;
 	for (size_t i = 0; i < input_sz; i++)
 	{
 		try
@@ -27,7 +27,7 @@ void mallocator_ex()
 			std::cerr << "Error Invalid input\n";
 			std::cin.clear();
 			std::cin.ignore(999999, '\n');
-			input_sz += 1; //Give an extra iteration
+			i -= 1; //Give an extra iteration
 		}
 
 		unique_numbers.insert(n);
@@ -49,7 +49,7 @@ void fixed_sz_alloc_ex()
 	SmallSet unique_numbers{ stack_arena };
 
 	int n = 0;
-	size_t input_sz = 10;
+	constexpr size_t input_sz = 10;
 	for (size_t i = 0; i < input_sz; i++)
 	{
 		try
@@ -65,7 +65,7 @@ void fixed_sz_alloc_ex()
 			std::cerr << "Error Invalid input\n";
 			std::cin.clear();
 			std::cin.ignore(999999, '\n');
-			input_sz += 1; //Give an extra iteration
+			i -= 1; //Give an extra iteration
 			continue;
 		}
 
