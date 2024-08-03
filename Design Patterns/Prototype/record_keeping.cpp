@@ -3,10 +3,6 @@
 #include <vector>
 #include <memory>
 
-#include <boost/serialization/serialization.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-
 struct Address
 {
     std::string street, city;
@@ -26,11 +22,11 @@ struct Address
 struct Contact
 {
     std::string name;
-    Address* address;
+	std::unique_ptr<Address> address;
 
-    Contact(const std::string& name, Address *address) : name(name), address(address) {}
+    Contact(std::string  name, Address *address) : name(std::move(name)), address(address) {}
 
-    Contact (const Contact& other) : name(other.name), address (new Address { *other.address}){} //copy constructor in address allows to pass the address as pattern
+    Contact (const Contact& other) : name(other.name), address(std::make_unique<Address>(*other.address)){} //copy constructor in address allows to pass the address as pattern
 
     friend std::ostream& operator<<(std::ostream& os, const Contact &contact)
     {
@@ -60,18 +56,15 @@ struct EmployeeFactory
 int main()
 {
     // Contact john{"John Doe", Address{"123 East Dr", "London", 123}};
-    // //Contact jane{"Jane Smith", Address{"123 East Dr", "London", 123}};
-    // Contact jane = john; //shallow copy
-    // jane.name = "Jane Smith";
-    // jane.address->suite = 103;
+    // Contact jane{"Jane Smith", Address{"123 East Dr", "London", 123}};
 
-    // std::cout << john << '\n' << jane << '\n';
+    const std::unique_ptr<Contact> john = EmployeeFactory::new_main_office_employee("John", 123);
 
-    std::unique_ptr<Contact> john = EmployeeFactory::new_main_office_employee("John", 123);
+	Contact jane = *john; //shallow copy
+	jane.name = "Jane Smith";
+	jane.address->suite = 103;
 
-    std::cout << john << '\n';
-
-
+    std::cout << *john << '\n' << jane << '\n';
 
     return 0;
 }

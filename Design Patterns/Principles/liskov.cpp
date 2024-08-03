@@ -1,41 +1,40 @@
 #include <iostream>
-#include <string>
 #include <vector>
 
 class Rectangle
 {
 protected:
-	int width;
-	int height;
+	int width_;
+	int height_;
 
 public:
-	Rectangle(int width, int height) : width(width), height(height)
+	Rectangle(int width, int height) : width_(width), height_(height)
 	{
 	}
 
 	virtual void setWidth(int width)
 	{
-		Rectangle::width = width;
+		Rectangle::width_ = width;
 	}
 
 	virtual void setHeight(int height)
 	{
-		Rectangle::height = height;
+		Rectangle::height_ = height;
 	}
 
 	int getWidth() const
 	{
-		return width;
+		return width_;
 	}
 
 	int getHeight() const
 	{
-		return height;
+		return height_;
 	}
 
 	int area() const
 	{
-		return width * height;
+		return width_ * height_;
 	}
 
 };
@@ -49,12 +48,12 @@ public:
 
 	void setWidth(int width) override
 	{
-		this->width = this->height = width;
+		this->width_ = this->height_ = width;
 	}
 
 	void setHeight(int height) override
 	{
-		this->width = this->height = height;
+		this->width_ = this->height_ = height;
 	}
 };
 
