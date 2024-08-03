@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <type_traits>
 
@@ -8,20 +9,22 @@ public:
     T data;
     ListNode* next;
 
-    ListNode(int data)
+    ListNode(const int n)
     {
-        this->data = data;
+        this->data = n;
         this->next = nullptr;
     }
 
-    void insert(int data)
+    void insert(const int n)
     {
-        ListNode* node = new ListNode(data);
+        ListNode* node = new ListNode(n);
         ListNode* curr = this;
-        while (curr->next != nullptr)
+
+		while (curr->next != nullptr)
         {
             curr = curr->next;
         }
+
         curr->next = node;
     }
 
@@ -36,17 +39,17 @@ public:
         std::cout << '\n';
     }
 
-    void remove(int data)
+    void remove(const int n)
     {
         ListNode* curr = this;
         ListNode* prev = nullptr;
         while (curr != nullptr)
         {
-            if (curr->data == data)
+            if (curr->data == n)
             {
                 if (prev == nullptr)
                 {
-                    this->data = curr->next->data;
+                    this->data = curr->next->data_;
                     this->next = curr->next->next;
                 }
                 else
@@ -56,6 +59,7 @@ public:
                 delete curr;
                 return;
             }
+
             prev = curr;
             curr = curr->next;
         }
@@ -66,6 +70,7 @@ public:
         ListNode* curr = this;
         ListNode* prev = nullptr;
         ListNode* next_node = nullptr;
+
         while (curr != nullptr)
         {
             next_node = curr->next;
@@ -73,6 +78,7 @@ public:
             prev = curr;
             curr = next_node;
         }
+
         this->data = prev->data;
         this->next = prev->next;
     }
@@ -81,11 +87,13 @@ public:
     {
         ListNode* curr = this;
         int count = 0;
+
         while (curr != nullptr)
         {
             count++;
             curr = curr->next;
         }
+
         return count;
     }
 
@@ -93,15 +101,17 @@ public:
     {
         ListNode* slow = this;
         ListNode* fast = this;
+
         while (fast != nullptr && fast->next != nullptr)
         {
             slow = slow->next;
             fast = fast->next->next;
         }
+
         return slow;
     }
 
-    ListNode* nth(int n)
+    ListNode* nth(const int n)
     {
         ListNode* curr = this;
         int count = 0;

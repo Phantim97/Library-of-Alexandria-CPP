@@ -1,5 +1,5 @@
+#pragma once
 #include <iostream>
-
 template<typename T>
 class Stack
 {
@@ -14,7 +14,7 @@ public:
         next_idx_ = 0; //Empty stack
     }
 
-    Stack(uint32_t sz) //Allocate stack of size sz
+    Stack(const uint32_t sz) //Allocate stack of size sz
     {
         arr_ = new T[sz];
         next_idx_ = 0; //Empty stack
@@ -30,7 +30,7 @@ public:
         return next_idx_ == 0;
     }
 
-    void push(T data)
+    void push(const T data)
     {
         if (next_idx_ == 4)
         {

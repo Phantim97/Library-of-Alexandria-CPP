@@ -1,5 +1,6 @@
-
+#pragma once
 #include <queue>
+#include <iostream>
 template <typename T>
 class BinaryTreeNode
 {
@@ -8,11 +9,11 @@ public:
     BinaryTreeNode* left;
     BinaryTreeNode* right;
 
-    BinaryTreeNode(int data)
+    BinaryTreeNode(int n)
     {
-        this->data = data;
-        left = nullptr;
-        right = nullptr;
+        this->data = n;
+        left_ = nullptr;
+        right_ = nullptr;
     }
 
     ~BinaryTreeNode()
@@ -21,28 +22,28 @@ public:
         delete right;
     }
     
-    void insert(T data)
+    void insert(T n)
     {
-        if (data < this->data)
+        if (n < this->data)
         {
             if (left == nullptr)
             {
-                left = new BinaryTreeNode(data);
+                left = new BinaryTreeNode(n);
             }
             else
             {
-                left->insert(data);
+                left ->insert(n);
             }
         }
         else
         {
             if (right == nullptr)
             {
-                right = new BinaryTreeNode(data);
+                right = new BinaryTreeNode(n);
             }
             else
             {
-                right->insert(data);
+                right->insert(n);
             }
         }
     }
@@ -60,9 +61,9 @@ public:
         }
     }
     
-    bool contains(T data) const
+    bool contains(const T n) const
     {
-        if (data == this->data)
+        if (n == this->data)
         {
             return true;
         }
@@ -74,7 +75,7 @@ public:
             }
             else
             {
-                return left->contains(data);
+                return left->contains(n);
             }
         }
         else
@@ -85,25 +86,25 @@ public:
             }
             else
             {
-                return right->contains(data);
+                return right->contains(n);
             }
         }
     }
     
-    void remove(T data, BinaryTreeNode* parent)
+    void remove(const T n, BinaryTreeNode* parent)
     {
-        if (data < this->data)
+        if (n < this->data)
         {
             if (left != nullptr)
             {
                 left->remove(data, this);
             }
         }
-        else if (data > this->data)
+        else if (n > this->data)
         {
             if (right != nullptr)
             {
-                right->remove(data, this);
+                right->remove(n, this);
             }
         }
         else
@@ -111,7 +112,7 @@ public:
             if (left != nullptr && right != nullptr)
             {
                 this->data = right->min();
-                right->remove(this->data, this);
+                right->remove(this->data_, this);
             }
             else if (parent->left == this)
             {

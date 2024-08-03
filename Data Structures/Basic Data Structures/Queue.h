@@ -1,5 +1,6 @@
+#pragma once
 #include <iostream>
-#include <stack> //For reverse
+
 template <typename T>
 class Queue
 {
@@ -36,7 +37,7 @@ public:
         return size_ == 0;
     }
 
-    void enqueue(T data)
+    void enqueue(const T data)
     {
         if (size_ == 4)
         {
@@ -48,6 +49,7 @@ public:
             delete[] arr_;
             arr_ = temp;
         }
+
         arr_[back_] = data;
         back_ = (back_ + 1) % 4;
         size_++;
@@ -59,6 +61,7 @@ public:
         {
             return;
         }
+
         front_ = (front_ + 1) % 4;
         size_--;
     }
@@ -66,21 +69,5 @@ public:
     T front() const
     {
         return arr_[front_];
-    }
-    
-    //Reverse using a placeholoder stack
-    void reverse()
-    {
-        std::stack<T> s;
-        while (!empty())
-        {
-            s.push(front());
-            dequeue();
-        }
-        while (!s.empty())
-        {
-            enqueue(s.top());
-            s.pop();
-        }
     }
 };

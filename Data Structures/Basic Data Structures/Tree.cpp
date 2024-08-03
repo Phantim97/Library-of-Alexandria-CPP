@@ -5,12 +5,12 @@ template <typename T>
 class TreeNode
 {
 private:
-    T data_;
+    T data_ {};
 
 public:
     std::vector<TreeNode*> children;
 
-    TreeNode(T data)
+    explicit TreeNode(T data)
     {
         this->data_ = data;
     }
@@ -49,7 +49,7 @@ public:
         return children[idx];
     }
     
-        size_t count_nodes() const
+	size_t count_nodes() const
     {
         size_t count = 1;
 
