@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstddef>
 #include <cstdint>
+#include <new>
 
 template <size_t N>
 class Arena
@@ -43,6 +44,35 @@ public:
 		return static_cast<size_t>(ptr_ - buffer_);
 	}
 
-	std::byte* allocate(size_t n);
-	void deallocate(std::byte* p, size_t n) noexcept;
+	std::byte* allocate(size_t n)
+	{
+		const size_t aligned_n = align_up(n);
+		const size_t available_bytes = buffer_ + N - ptr_;
+
+		if (available_bytes >= aligned_n)
+		{
+			std::byte* r = ptr_;
+			ptr_ += aligned_n;
+			return r;
+		}
+
+		return static_cast<std::byte*>(::operator new(n)); // If no space, resort to operator new
+	}
+
+	void deallocate(std::byte* p, size_t n) noexcept
+	{
+		if (pointer_in_buffer(p))
+		{
+			n = align_up(n);
+
+			if (p + n == ptr_)
+			{
+				ptr_ = p;
+			}
+		}
+		else
+		{
+			::operator delete(p);
+		}
+	}
 };
