@@ -19,17 +19,17 @@ struct MFP : IMachine
 {
 	void print(Document& doc) override
 	{
-		std::cout << "Printing document: " << doc.text << std::endl;
+		std::cout << "Printing document: " << doc.text << '\n';
 	}
 
 	void scan(Document& doc) override
 	{
-		std::cout << "Scanning document: " << doc.text << std::endl;
+		std::cout << "Scanning document: " << doc.text << '\n';
 	}
 
 	void fax(Document& doc) override
 	{
-		std::cout << "Faxing document: " << doc.text << std::endl;
+		std::cout << "Faxing document: " << doc.text << '\n';
 	}
 };
 
@@ -47,7 +47,7 @@ struct Printer : IPrinter
 {
 	void print(Document &doc) override
 	{
-		std::cout << "Printing document: " << doc.text << std::endl;
+		std::cout << "Printing document: " << doc.text << '\n';
 	}
 };
 
@@ -55,7 +55,7 @@ struct Scanner : IScanner
 {
 	void scan(Document &doc) override
 	{
-		std::cout << "Scanning document: " << doc.text << std::endl;
+		std::cout << "Scanning document: " << doc.text << '\n';
 	}
 };
 

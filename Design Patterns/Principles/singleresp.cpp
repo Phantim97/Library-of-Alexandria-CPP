@@ -1,25 +1,23 @@
 #include <iostream>
-#include <cstdio>
 #include <string>
+#include <utility>
 #include <vector>
 #include <fstream>
 #include <boost/lexical_cast.hpp>
-
-using namespace boost;
 
 struct Journal
 {
 	std::string title;
 	std::vector<std::string> entries;
 
-	Journal(const std::string &title) : title(title)
+	explicit Journal(std::string title) : title(std::move(title))
 	{
 	}
 
 	void add_entry(const std::string &entry)
 	{
 		static int count = 1;
-		entries.push_back(lexical_cast<std::string>(count++) + ": " + entry);
+		entries.push_back(boost::lexical_cast<std::string>(count++) + ": " + entry);
 	}
 
 	//Although we would do this here it is not recommended (outside scope of journal's functionality)
@@ -52,11 +50,10 @@ int main()
 	Journal journal {"Log"};
 	journal.add_entry("Screamed into the void");
 	journal.add_entry("Help me");
+	journal.add_entry("Sample Text");
 
 	PersistenceManager pm;
 	pm.save(journal, "log.txt");
-
-	getchar();
 
 	return 0;
 }
