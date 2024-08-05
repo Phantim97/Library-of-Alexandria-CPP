@@ -44,7 +44,7 @@ public:
 		return static_cast<size_t>(ptr_ - buffer_);
 	}
 
-	std::byte* allocate(size_t n)
+	std::byte* allocate(const size_t n)
 	{
 		const size_t aligned_n = align_up(n);
 		const size_t available_bytes = buffer_ + N - ptr_;
