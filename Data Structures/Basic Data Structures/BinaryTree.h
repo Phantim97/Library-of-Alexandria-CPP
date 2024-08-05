@@ -2,18 +2,17 @@
 #include <queue>
 #include <iostream>
 template <typename T>
-class BinaryTreeNode
+struct BinaryTreeNode
 {
-public:
     T data;
     BinaryTreeNode* left;
     BinaryTreeNode* right;
 
-    BinaryTreeNode(int n)
+    BinaryTreeNode(const T n)
     {
-        this->data = n;
-        left_ = nullptr;
-        right_ = nullptr;
+        data = n;
+        left = nullptr;
+        right = nullptr;
     }
 
     ~BinaryTreeNode()
@@ -22,9 +21,9 @@ public:
         delete right;
     }
     
-    void insert(T n)
+    void insert(const T n)
     {
-        if (n < this->data)
+        if (n < data)
         {
             if (left == nullptr)
             {
@@ -32,7 +31,7 @@ public:
             }
             else
             {
-                left ->insert(n);
+                left->insert(n);
             }
         }
         else
@@ -54,7 +53,9 @@ public:
         {
             left->print();
         }
+
         std::cout << data << ' ';
+
         if (right != nullptr)
         {
             right->print();
@@ -93,7 +94,7 @@ public:
     
     void remove(const T n, BinaryTreeNode* parent)
     {
-        if (n < this->data)
+        if (n < data)
         {
             if (left != nullptr)
             {
@@ -111,8 +112,8 @@ public:
         {
             if (left != nullptr && right != nullptr)
             {
-                this->data = right->min();
-                right->remove(this->data_, this);
+                data = right->min();
+                right->remove(data, this);
             }
             else if (parent->left == this)
             {

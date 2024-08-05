@@ -3,19 +3,18 @@
 #include <type_traits>
 
 template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
-class ListNode
+struct ListNode
 {
-public:
     T data;
     ListNode* next;
 
-    ListNode(const int n)
+    ListNode(const T n)
     {
-        this->data = n;
-        this->next = nullptr;
+        data = n;
+        next = nullptr;
     }
 
-    void insert(const int n)
+    void insert(const T n)
     {
         ListNode* node = new ListNode(n);
         ListNode* curr = this;
@@ -28,34 +27,38 @@ public:
         curr->next = node;
     }
 
-    void print()
+    void print() const
     {
         ListNode* curr = this;
+
         while (curr != nullptr)
         {
             std::cout << curr->data << ' ';
             curr = curr->next;
         }
+
         std::cout << '\n';
     }
 
-    void remove(const int n)
+    void remove(const T n)
     {
         ListNode* curr = this;
         ListNode* prev = nullptr;
+
         while (curr != nullptr)
         {
             if (curr->data == n)
             {
                 if (prev == nullptr)
                 {
-                    this->data = curr->next->data_;
-                    this->next = curr->next->next;
+                    data = curr->next->data;
+                    next = curr->next->next;
                 }
                 else
                 {
                     prev->next = curr->next;
                 }
+
                 delete curr;
                 return;
             }
@@ -79,11 +82,11 @@ public:
             curr = next_node;
         }
 
-        this->data = prev->data;
-        this->next = prev->next;
+        data = prev->data;
+        next = prev->next;
     }
 
-    int length()
+    int length() const
     {
         ListNode* curr = this;
         int count = 0;
@@ -111,16 +114,18 @@ public:
         return slow;
     }
 
-    ListNode* nth(const int n)
+    ListNode* nth(const size_t n)
     {
         ListNode* curr = this;
-        int count = 0;
+        size_t count = 0;
+
         while (curr != nullptr)
         {
             if (count == n)
             {
                 return curr;
             }
+
             count++;
             curr = curr->next;
         }
@@ -131,6 +136,7 @@ public:
     {
         ListNode* dummy = new ListNode(0);
         ListNode* curr = dummy;
+
         while (l1 != nullptr && l2 != nullptr)
         {
             if (l1->data < l2->data)
@@ -143,16 +149,20 @@ public:
                 curr->next = l2;
                 l2 = l2->next;
             }
+
             curr = curr->next;
         }
+
         if (l1 != nullptr)
         {
             curr->next = l1;
         }
+
         if (l2 != nullptr)
         {
             curr->next = l2;
         }
+
         return dummy->next;
     }
 };

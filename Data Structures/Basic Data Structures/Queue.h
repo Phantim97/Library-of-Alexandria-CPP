@@ -5,69 +5,89 @@ template <typename T>
 class Queue
 {
 private:
-    T* arr_;
-    int front_;
-    int back_;
-    int size_;
+	T* arr_;
+	size_t capacity_;
+	size_t front_;
+	size_t back_;
+	size_t size_;
 
 public:
-    Queue()
-    {
-        arr_ = new T[4];
-        front_ = 0;
-        back_ = 0;
-        size_ = 0;
-    }
+	Queue() : capacity_(4), front_(0), back_(0), size_(0)
+	{
+		arr_ = new T[capacity_];
+	}
 
-    Queue(uint32_t sz)
-    {
-        arr_ = new T[sz];
-        front_ = 0;
-        back_ = 0;
-        size_ = 0;
-    }
+	Queue(const size_t sz) : capacity_(sz), front_(0), back_(0), size_(0)
+	{
+		arr_ = new T[capacity_];
+	}
 
-    int size() const
-    {
-        return size_;
-    }
+	~Queue()
+	{
+		delete[] arr_;
+	}
 
-    bool empty() const
-    {
-        return size_ == 0;
-    }
+	size_t size() const
+	{
+		return size_;
+	}
 
-    void enqueue(const T data)
-    {
-        if (size_ == 4)
-        {
-            T* temp = new T[2 * 4];
-            for (int i = 0; i < 4; i++)
-            {
-                temp[i] = arr_[i];
-            }
-            delete[] arr_;
-            arr_ = temp;
-        }
+	bool empty() const
+	{
+		return size_ == 0;
+	}
 
-        arr_[back_] = data;
-        back_ = (back_ + 1) % 4;
-        size_++;
-    }
+	void enqueue(const T& data)
+	{
+		if (size_ == capacity_)
+		{
+			T* temp = new T[2 * capacity_];
 
-    void dequeue()
-    {
-        if (size_ == 0)
-        {
-            return;
-        }
+			for (size_t i = 0; i < size_; i++)
+			{
+				temp[i] = arr_[(front_ + i) % capacity_];
+			}
 
-        front_ = (front_ + 1) % 4;
-        size_--;
-    }
+			delete[] arr_;
+			arr_ = temp;
+			front_ = 0;
+			back_ = size_;
+			capacity_ *= 2;
+		}
 
-    T front() const
-    {
-        return arr_[front_];
-    }
+		arr_[back_] = data;
+		back_ = (back_ + 1) % capacity_;
+		size_++;
+	}
+
+	void dequeue()
+	{
+		if (size_ == 0)
+		{
+			return;
+		}
+
+		front_ = (front_ + 1) % capacity_;
+		size_--;
+	}
+
+	T front() const
+	{
+		if (empty())
+		{
+			return T();
+		}
+
+		return arr_[front_];
+	}
+
+	T back() const
+	{
+		if (empty())
+		{
+			return T();
+		}
+
+		return arr_[(back_ + capacity_ - 1) % capacity_];
+	}
 };
