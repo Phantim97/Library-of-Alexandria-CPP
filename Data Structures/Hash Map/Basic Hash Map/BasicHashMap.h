@@ -51,11 +51,12 @@ public:
 	}
 };
 
-static constexpr size_t TABLE_SIZE = 10;
+static constexpr size_t TABLE_SIZE = 10; //Arbitrary Table Size (Can be anything)
 
 // Default hash function class
 template <typename K>
-struct KeyHash {
+struct KeyHash
+{
 	unsigned long operator()(const K& key) const
 	{
 		return reinterpret_cast<unsigned long>(key) % TABLE_SIZE;
@@ -91,6 +92,7 @@ public:
 			}
 			_table[i] = NULL;
 		}
+
 		// destroy the hash table
 		delete[] _table;
 	}
@@ -100,7 +102,7 @@ public:
 		unsigned long hashValue = _hashFunc(key);
 		HashNode<K, V>* entry = _table[hashValue];
 
-		while (entry != NULL)
+		while (entry != nullptr)
 		{
 			if (entry->getKey() == key)
 			{
@@ -109,6 +111,7 @@ public:
 			}
 			entry = entry->getNext();
 		}
+
 		return false;
 	}
 
@@ -147,10 +150,10 @@ public:
 	void remove(const K& key)
 	{
 		unsigned long hashValue = _hashFunc(key);
-		HashNode<K, V>* prev = NULL;
+		HashNode<K, V>* prev = nullptr;
 		HashNode<K, V>* entry = _table[hashValue];
 
-		while (entry != NULL && entry->getKey() != key)
+		while (entry != nullptr && entry->getKey() != key)
 		{
 			prev = entry;
 			entry = entry->getNext();
