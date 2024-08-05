@@ -12,7 +12,7 @@ private:
 	time_t _time;
 	std::string _calculate_hash() const;
 public:
-	std::string prevHash;
+	std::string prev_hash;
 	Block(uint32_t index_in, const std::string& data_in);
 	std::string get_hash();
 	void mine_block(uint32_t difficulty);

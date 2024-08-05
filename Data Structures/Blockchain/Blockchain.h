@@ -10,6 +10,6 @@ private:
 	std::vector<Block> _chain;
 	Block _get_last_block() const;
 public:
-	Blockchain();
-	void addBlock(Block bNew);
+	explicit Blockchain(const uint32_t difficulty);
+	void add_block(Block b);
 };

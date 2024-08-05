@@ -7,7 +7,8 @@
 #include <fstream> //for text file writing
 #include <sstream> //stringstream although string may suffice
 
-#define TRAINING_MAX 15000
+static constexpr size_t TRAINING_MAX = 15000;
+
 class InvalidInputException
 {
 public:

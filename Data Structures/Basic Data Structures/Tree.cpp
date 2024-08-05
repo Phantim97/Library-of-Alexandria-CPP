@@ -5,12 +5,12 @@ template <typename T>
 class TreeNode
 {
 private:
-    T data_;
+    T data_ {};
 
 public:
     std::vector<TreeNode*> children;
 
-    TreeNode(T data)
+    explicit TreeNode(T data)
     {
         this->data_ = data;
     }
@@ -49,7 +49,7 @@ public:
         return children[idx];
     }
     
-        size_t count_nodes() const
+	size_t count_nodes() const
     {
         size_t count = 1;
 
@@ -67,7 +67,7 @@ public:
 
         for (int i = 0; i < children.size(); i++)
         {
-            size_t child_height = children[i]->height();
+            const size_t child_height = children[i]->height();
             
             if (child_height > max_height)
             {
@@ -87,6 +87,7 @@ public:
         }
 
         size_t count = 0;
+
         for (int i = 0; i < children.size(); i++)
         {
             count += children[i]->print_at_depth(depth - 1);
@@ -98,7 +99,8 @@ public:
 
 void print(TreeNode<int>* root)
 {
-    std::cout << root->data() << std::endl;
+    std::cout << root->data() << '\n';
+
     for (int i = 0; i < root->size(); i++)
     {
         print(root->children[i]);

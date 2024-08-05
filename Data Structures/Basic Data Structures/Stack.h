@@ -1,11 +1,11 @@
+#pragma once
 #include <iostream>
-
 template<typename T>
 class Stack
 {
 private:
     T* arr_;
-    int next_idx_;
+    size_t next_idx_;
 
 public:
     Stack()
@@ -14,13 +14,13 @@ public:
         next_idx_ = 0; //Empty stack
     }
 
-    Stack(uint32_t sz) //Allocate stack of size sz
+    Stack(const size_t sz) //Allocate stack of size sz
     {
         arr_ = new T[sz];
         next_idx_ = 0; //Empty stack
     }
 
-    int size() const
+    size_t size() const
     {
         return next_idx_;
     }
@@ -30,18 +30,21 @@ public:
         return next_idx_ == 0;
     }
 
-    void push(T data)
+    void push(const T data)
     {
         if (next_idx_ == 4)
         {
             T* temp = new T[2 * 4];
+
             for (int i = 0; i < 4; i++)
             {
                 temp[i] = arr_[i];
             }
+
             delete[] arr_;
             arr_ = temp;
         }
+
         arr_[next_idx_] = data;
         next_idx_++;
     }
@@ -52,6 +55,7 @@ public:
         {
             return;
         }
+
         next_idx_--;
     }
 
@@ -59,5 +63,4 @@ public:
     {
         return arr_[next_idx_ - 1];
     }
-
 };
