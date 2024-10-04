@@ -74,29 +74,28 @@ constexpr bool is_same_v = st_same_type<T1, T2>::value;
 template<typename T1, typename T2>
 using same_t = typename st_same_type<T1, T2>::type;
 
-
 template<typename T, typename = st_time<T>>
 struct TimerRes
 {
 	void operator()(const int t) const
 	{
-		if (is_same_v<T, std::chrono::nanoseconds>)
+		if constexpr (is_same_v<T, std::chrono::nanoseconds>)
 		{
 			std::cout << "Duration: " << t << "ns" << '\n';
 		}
-		else if (is_same_v<T, std::chrono::milliseconds>)
+		else if constexpr (is_same_v<T, std::chrono::milliseconds>)
 		{
 			std::cout << "Duration: " << t << "ms" << '\n';
 		}
-		else if (is_same_v<T, std::chrono::seconds>)
+		else if constexpr (is_same_v<T, std::chrono::seconds>)
 		{
 			std::cout << "Duration: " << t << "s" << '\n';
 		}
-		else if (is_same_v<T, std::chrono::minutes>)
+		else if constexpr (is_same_v<T, std::chrono::minutes>)
 		{
 			std::cout << "Duration: " << t << "mins" << '\n';
 		}
-		else if (is_same_v<T, std::chrono::hours>)
+		else if constexpr (is_same_v<T, std::chrono::hours>)
 		{
 			std::cout << "Duration: " << t << "hrs" << '\n';
 		}
