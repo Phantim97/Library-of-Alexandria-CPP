@@ -12,4 +12,5 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Linux detected: Using libc++ for better C++23 ranges support")
 endif()
 
-add_executable(ranges views.cpp)
+add_executable(ranges views.cpp
+        advanced_views.cpp)
