@@ -75,8 +75,9 @@ void string_original()
 
         start = end + 1;
         end = data.find(',', start);
-
     }
+
+    print_result(values);
 }
 
 void string_ex()
